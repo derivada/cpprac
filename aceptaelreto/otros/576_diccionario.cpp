@@ -7,8 +7,7 @@ using namespace std;
 
 // Tipos
 #define ll long long   // 64 bits INT
-#define ld long double // 80 bits FP 
-
+#define ld long double // 80 bits FP
 
 // Constantes
 #define PI 3.1415926535897932384626433832795l
@@ -18,7 +17,7 @@ const ll INF = 1e9;        // Infinito
 const ld EPS = 1e-9;       // Comparaciones de fp, e.g. if(abs(a-b) < EPS)
 
 // Estructuras de datos
-#define ar array        
+#define ar array
 typedef vector<int> vi;
 typedef pair<int, int> pi;
 #define umap unordered_map
@@ -26,15 +25,33 @@ typedef pair<int, int> pi;
 #define S second
 #define PB push_back
 #define MP make_pair
-#define sza(x) ((int)x.size())  
+#define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end() // Aplicar a toda la estructura, e.g. sort(all(a))
 
 // Bucles
-#define FOR(i, a, b) for(int i = a; i<= b; i++)
+#define FOR(i, a, b) for (int i = a; i <= b; i++)
 
-void solve()
+bool solve()
 {
-
+    int s = 0, sum = 0;
+    scanf("%d", &s);
+    if (!s)
+        return false;
+    int tmp = 0;
+    while (1)
+    {
+        scanf("%d", &tmp);
+        if (tmp == 0)
+            break;
+        sum += tmp;
+    }
+    sum *= s;
+    int seg = sum % 60;
+    sum /= 60;
+    int min = sum % 60;
+    sum /= 60;
+    printf("%02d:%02d:%02d\n", sum, min, seg);
+    return true;
 }
 
 int main()
@@ -47,12 +64,6 @@ int main()
     freopen("input.txt", "r", stdin);
     freopen("output.txt", "w", stdout);
 
-    // Número de casos
-    int tc = 1;
-    cin >> tc;
-
-    for (int t = 1; t <= tc; t++)
-    {
-        solve();
-    }
+    while (solve())
+        ;
 }
