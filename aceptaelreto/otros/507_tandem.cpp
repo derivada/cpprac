@@ -5,7 +5,7 @@ using namespace std;
 // #pragma GCC optimize("Ofast,unroll-loops")
 // #pragma GCC target("avx,avx2,fma")
 
-// Tipos>
+// Tipos
 #define ll long long   // 64 bits INT
 #define ld long double // 80 bits FP
 
@@ -29,71 +29,66 @@ typedef pair<int, int> pi;
 #define all(a) (a).begin(), (a).end() // Aplicar a toda la estructura, e.g. sort(all(a))
 
 // Bucles
-#define FOR(i, a, b) for (int i = a; i < b; i++)
-
-int maxdiff(int first, int second, int third)
-{
-    int diff21 = abs(second - first);
-    int diff32 = abs(third - second);
-    int diff31 = abs(third - first);
-    return max(max(diff32, diff21), diff31);
-}
+#define FOR(i, a, b) for (int i = a; i <= b; i++)
 
 bool solve()
 {
     // WA
-    int N = 0;
-    cin >> N;
+    int N = 0, M = 0, tmp;
+    long total = 0;
+    cin >> N >> M;
     if (!N)
         return false;
-    vi por;
-    por.resize(N);
-
-    int tmp = 0, sum = 0;
+    vi v;
+    if (N == 1)
+        return 0;
     for (int i = 0; i < N; i++)
     {
         cin >> tmp;
-        por[i] = tmp;
-        sum += tmp;
+        v.PB(tmp);
     }
-
-    
-    int i = 0, j = N - 1, limit = N;
-    ll first = por[i], third = por[j];
-    ll second = sum - first - third;
-    ll max = maxdiff(first, second, third), newDiffR = 0, newDiffL = 0;
-    while (i < j - 1 && limit >= 0)
+    sort(all(v));
+    for (int i = 0; i < N - 2; i++)
     {
-        limit--;
-        // Probar mover i a la derecha
-        newDiffR = maxdiff(first + por[i + 1], second - por[i + 1], third);
-        // Probar mover j a la izquierda
-        newDiffL = maxdiff(first, second - por[j - 1], third + por[j - 1]);
-
-        if (newDiffR <= max && newDiffR <= newDiffL)
+        // Busqueda binaria en el slice del array v[i+1..N] al elemento y0 tal que M - v[i] = y0
+        // Si no existe, y0 > M -v[i] más cercano
+        if (v[i] * 2 > M)
+            break;
+        int low = min(i + 1, N - 1), high = N - 1, k = (low + high) / 2;
+        while (low < high)
         {
-            max = newDiffR;
-            i++;
-            first += por[i];
-            second -= por[i];
-            continue;
+            if (v[k] == M - v[i])
+            {
+                break;
+            }
+            else if (v[k] > M - v[i])
+            {
+                high = k - 1;
+            }
+            else
+            {
+                low = k + 1;
+            }
+            k = (low + high) / 2;
         }
-
-        if (newDiffL <= max && newDiffL <= newDiffR)
+        // fine tune
+        while (k > i && v[k] + v[i] > M)
         {
-            max = newDiffL;
-            j--;
-            second -= por[j];
-            third += por[j];
-            continue;
+            k--;
         }
+        if (k - i > 0)
+            total += k - i;
     }
-    cout << max << "\n";
+    if (v[N - 2] + v[N - 1] <= M)
+        total++;
+    cout << total << "\n";
+
     return true;
 }
 
 int main()
 {
+    auto start = chrono::high_resolution_clock::now();
     // Optimizacion I/O
     ios_base::sync_with_stdio(0);
     cin.tie(0);
@@ -102,7 +97,9 @@ int main()
     freopen("input.txt", "r", stdin);
     freopen("output.txt", "w", stdout);
 
-    // Número de casos
     while (solve())
         ;
+    auto stop = chrono::high_resolution_clock::now();
+    auto duration = chrono::duration_cast<chrono::milliseconds>(stop - start);
+    cout << duration.count() << " ms" << endl;
 }

@@ -5,7 +5,7 @@ using namespace std;
 // #pragma GCC optimize("Ofast,unroll-loops")
 // #pragma GCC target("avx,avx2,fma")
 
-// Tipos>
+// Tipos
 #define ll long long   // 64 bits INT
 #define ld long double // 80 bits FP
 
@@ -29,66 +29,33 @@ typedef pair<int, int> pi;
 #define all(a) (a).begin(), (a).end() // Aplicar a toda la estructura, e.g. sort(all(a))
 
 // Bucles
-#define FOR(i, a, b) for (int i = a; i < b; i++)
-
-int maxdiff(int first, int second, int third)
-{
-    int diff21 = abs(second - first);
-    int diff32 = abs(third - second);
-    int diff31 = abs(third - first);
-    return max(max(diff32, diff21), diff31);
-}
+#define FOR(a, b) for (int i = a; i < b; i++)
+#define ROF(a, b) for (int i = n; i > a; i--)
+#define EACH(n) for (int i = 0; i < n; i++)
 
 bool solve()
 {
-    // WA
-    int N = 0;
+    int N = 0, tmp1, tmp2, total = 0;
+    priority_queue<pair<int, int>> v;
     cin >> N;
     if (!N)
         return false;
-    vi por;
-    por.resize(N);
-
-    int tmp = 0, sum = 0;
     for (int i = 0; i < N; i++)
     {
-        cin >> tmp;
-        por[i] = tmp;
-        sum += tmp;
+        cin >> tmp1 >> tmp2;
+        // Se pone el - para cambiar el orden de la prio_queue, que siempre quita el máximo
+        v.push({-tmp1, tmp2});
     }
-
-    
-    int i = 0, j = N - 1, limit = N;
-    ll first = por[i], third = por[j];
-    ll second = sum - first - third;
-    ll max = maxdiff(first, second, third), newDiffR = 0, newDiffL = 0;
-    while (i < j - 1 && limit >= 0)
+    while (!v.empty())
     {
-        limit--;
-        // Probar mover i a la derecha
-        newDiffR = maxdiff(first + por[i + 1], second - por[i + 1], third);
-        // Probar mover j a la izquierda
-        newDiffL = maxdiff(first, second - por[j - 1], third + por[j - 1]);
-
-        if (newDiffR <= max && newDiffR <= newDiffL)
-        {
-            max = newDiffR;
-            i++;
-            first += por[i];
-            second -= por[i];
-            continue;
-        }
-
-        if (newDiffL <= max && newDiffL <= newDiffR)
-        {
-            max = newDiffL;
-            j--;
-            second -= por[j];
-            third += por[j];
-            continue;
-        }
+        auto a = v.top();
+        v.pop();
+        a.first += total;
+        if (a.first <= 0 && N >= a.second) // no para de aplaudir por falta de ruido, sumar tiempo
+            total -= a.first; // Invertir el signo
+        N--;
     }
-    cout << max << "\n";
+    cout << total << "\n";
     return true;
 }
 
@@ -102,7 +69,6 @@ int main()
     freopen("input.txt", "r", stdin);
     freopen("output.txt", "w", stdout);
 
-    // Número de casos
     while (solve())
         ;
 }
