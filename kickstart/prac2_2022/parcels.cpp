@@ -33,54 +33,64 @@ typedef pair<int, int> pi;
 
 void solve()
 {
-    string s;
-    cin >> s;
-    for (int k = 0; k < s.length() - 3; k++)
+    int R, C;
+    string str;
+    cin >> R >> C;
+    vector<vi> mat;
+    mat.resize(R);
+    for (int i = 0; i < R; i++)
     {
-        // WIP https://codingcompetitions.withgoogle.com/kickstart/round/00000000008f4a94/0000000000b55464
-        int i = k, voc = 0;
-        while (i <= s.length() - 1 && voc < 2)
+        cin >> str;
+        for (int j = 0; j < str.length(); j++)
         {
-            if (s[i] == 'a' || s[i] == 'e' || s[i] == 'i' || s[i] == 'o' || s[i] == 'u')
-                voc++;
-            i++;
-        }
-        if (voc < 2)
-            break;
-
-        int len = i - k;
-        i--;
-        for (; i < s.length() - 1; i++, len++)
-        {
-            int mid = i+1;
-            while (mid < s.length())
-            {
-                if (s[mid] == 'a' || s[mid] == 'e' || s[mid] == 'i' || s[mid] == 'o' || s[mid] == 'u')
-                    break;
-                mid++;
-            }
-            for (int j = s.length() - 1; (mid+len-1) < j; j--)
-            {
-                bool flag = true;
-                for (int b = k; b <= i; b++)
-                {
-                    if (s[b] != s[j - len + 1 + b - k])
-                    {
-                        flag = false;
-                        break;
-                    }
-                }
-                if (flag)
-                {
-                    cout << "Spell!\n";
-                    return;
-                }
-            }
-            if (s[i + 1] == 'a' || s[i + 1] == 'e' || s[i + 1] == 'i' || s[i + 1] == 'o' || s[i + 1] == 'u')
-                break;
+            mat[i].PB(str[j] - '0');
         }
     }
-    cout << "Nothing.\n";
+    int minOverallDist = INT_MAX, tried_0 = 0;
+    // naw dude this shit is O(n^6)
+    for (int r = 0; r < R; r++)
+    {
+        for (int c = 0; c < C; c++)
+        {
+            int prev = mat[r][c];
+
+            if (mat[r][c] == 0)
+            {
+                mat[r][c] = 1;
+            }
+            else
+            {
+                if (tried_0)
+                    continue;
+                tried_0 = 1;
+            }
+            int maxDelivIJ = 0;
+            for (int i = 0; i < R; i++)
+            {
+                for (int j = 0; j < C; j++)
+                {
+                    // Hallar dist mayor
+                    int delivIJ = INT_MAX;
+                    for (int k = 0; k < R; k++)
+                    {
+                        for (int l = 0; l < C; l++)
+                        {
+                            int curr = abs(k - i) + abs(l - j);
+                            if (mat[k][l] && curr < delivIJ)
+                                delivIJ = curr;
+                        }
+                    }
+                    if (delivIJ > maxDelivIJ)
+                        maxDelivIJ = delivIJ;
+                }
+            }
+            if (maxDelivIJ < minOverallDist)
+                minOverallDist = maxDelivIJ;
+
+            mat[r][c] = prev;
+        }
+    }
+    cout << minOverallDist << "\n";
 }
 
 int main()
@@ -89,7 +99,6 @@ int main()
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-
     // Archivos I/O, BORRAR AL SUBIR
     freopen("input.txt", "r", stdin);
     freopen("output.txt", "w", stdout);
