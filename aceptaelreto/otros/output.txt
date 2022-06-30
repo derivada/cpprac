@@ -1,2 +1,3 @@
-105
-0 ms
+no subnormal
+subnormal
+subnormal
