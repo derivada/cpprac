@@ -1,3 +1,4 @@
-no subnormal
-subnormal
-subnormal
+3
+4
+1
+1
