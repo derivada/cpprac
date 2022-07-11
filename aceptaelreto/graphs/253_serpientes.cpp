@@ -1,10 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// Es bueno desactivarlas para debuggear
-#pragma GCC optimize("Ofast,unroll-loops")
-#pragma GCC target("avx,avx2,fma")
-
 // Tipos
 #define ll long long   // 64 bits INT
 #define ld long double // 80 bits FP
@@ -33,8 +29,8 @@ typedef pair<int, int> pi;
 bool solve()
 {
     // WA, tiempo alto
-    int N, K, S, E;
-    scanf("%d %d %d %d", &N, &K, &S, &E);
+    int N, K, S, E, from, to;
+    cin >> N >> K >> S >> E;
     if (!N)
         return false;
     int size = N * N;
@@ -44,7 +40,7 @@ bool solve()
     for (int i = 0; i < size; i++)
     {
         // añadir a cada casilla del grafo las alcanzables por dado
-        for (int j = i + 1; j < min(i + K + 1, size); j++)
+        for (int j = i + 1; j <= min(i + K, size - 1); j++)
         {
             adj[i].PB(MP(j, 1));
         }
@@ -52,9 +48,8 @@ bool solve()
 
     for (int i = 0; i < (S + E); i++)
     {
-        // añadir escaleras / serpientes
-        int from, to;
-        scanf(" %d %d", &from, &to);
+        // añadir serpientes y escaleras
+        cin >> from >> to;
         adj[from - 1].PB(MP(to - 1, 0));
     }
 
@@ -85,7 +80,7 @@ bool solve()
         }
     }
     
-    int tmp = size - 1;
+   /*  int tmp = size - 1;
     stack<int> camino;
     cout << "DEBUG, CAMINO 0 hasta 100 (al revés): ";
     camino.push(tmp + 1);
@@ -102,7 +97,7 @@ bool solve()
     }
 
     cout << endl;
-    
+     */
     cout << dist[size - 1] << "\n";
     return true;
 }
