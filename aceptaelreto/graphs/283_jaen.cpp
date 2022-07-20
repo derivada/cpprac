@@ -31,10 +31,25 @@ typedef pair<int, int> pi;
 
 // Bucles
 #define FOR(i, a, b) for(int i = a; i<= b; i++)
-
-void solve()
+vector<vector<int>> adj;
+bool solve()
 {
-
+    adj.clear();
+    int F = 0, C = 0;
+    cin >> F >> C;
+    if(!F) return false;
+    string tmp;
+    for(int i = 0; i<F; i++){
+        cin >> tmp;
+        assert(tmp.length()==C);
+        for(int j = 0; j<C; j++){
+            if(tmp[j]=='#'){
+                
+            } else {
+                adj[i].PB(j)
+            }
+        }
+    }
 }
 
 int main()
@@ -47,12 +62,5 @@ int main()
     freopen("input.txt", "r", stdin);
     freopen("output.txt", "w", stdout);
 
-    // Número de casos
-    int tc = 1;
-    cin >> tc;
-
-    for (int t = 1; t <= tc; t++)
-    {
-        solve();
-    }
+    while(sovle());
 }
