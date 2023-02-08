@@ -32,7 +32,17 @@ typedef vector<vector<pair<int, int>>> wgraph;
 
 void solve()
 {
-    
+    int n = 0;
+    cin >> n;
+    string s(200, 'a');
+    cout << s << endl;
+
+    for(int i = 0; i<n; i++){
+        int u;
+        cin >> u;
+        s[u] = s[u] == 'a' ? 'b' : 'a';
+        cout << s << endl;
+    }
 }
 
 int main()

@@ -32,7 +32,25 @@ typedef vector<vector<pair<int, int>>> wgraph;
 
 void solve()
 {
-    
+    int n, m, x, y, result = 0;
+    cin >> n >> m >> x >> y;
+    string s;
+    int price2 = min(2*x, y);
+    for(int i = 0; i<n; i++){
+        cin >> s;
+        int dots = 0;
+        for(int i = 0; i<m; i++){
+            if(s[i] == '*'){
+                result += dots%2 * x + dots/2 * price2;
+                dots = 0;
+            } 
+            else{
+                dots++;
+            }
+        }
+        result += dots%2 * x + dots/2 * price2;
+    }
+    cout << result << endl;
 }
 
 int main()

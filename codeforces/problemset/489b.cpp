@@ -32,7 +32,30 @@ typedef vector<vector<pair<int, int>>> wgraph;
 
 void solve()
 {
-    
+    int nb, ng;
+    cin >> nb;
+    vi b(nb,0);
+    for(int i = 0; i<nb; i++)
+        cin >> b[i];
+    cin >> ng;
+    vi g(ng,0);
+    for(int i = 0; i<ng;i++)
+        cin >> g[i];
+    int i = 0, j = 0; // i boys pointer, j girls pointer
+    int matches = 0;
+    sort(all(b)); sort(all(g)); // sort both arrays for greedy approach to work
+
+    while(i<nb && j<ng){
+        while(j < ng && g[j] < b[i]-1)
+            j++;
+        if(abs(g[j]-b[i])<=1){
+            matches++;
+            j++;
+        }
+        i++;
+    }
+    cout << matches << endl;
+
 }
 
 int main()
@@ -46,12 +69,5 @@ int main()
     // freopen("input.txt", "r", stdin);
     // freopen("output.txt", "w", stdout);
 
-    // Número de casos
-    int tc = 1;
-    cin >> tc;
-
-    for (int t = 1; t <= tc; t++)
-    {
-        solve();
-    }
+    solve();
 }

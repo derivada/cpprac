@@ -32,6 +32,10 @@ typedef vector<vector<pair<int, int>>> wgraph;
 
 void solve()
 {
+    int n, q;
+    cin >> n >> q;
+    vi v(n, 0);
+    FOR(i, 0, n) cin >> v[i];
     
 }
 

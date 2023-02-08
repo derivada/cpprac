@@ -1,5 +1,11 @@
 #include <bits/stdc++.h>
-using namespace std;   // Tipos
+using namespace std;
+
+// // Es bueno desactivarlas para debuggear
+// #pragma GCC optimize("Ofast,unroll-loops")
+// #pragma GCC target("avx,avx2,fma")
+
+// Tipos
 #define ll long long   // 64 bits INT
 #define ld long double // 80 bits FP 
 
@@ -15,10 +21,7 @@ const ld EPS = 1e-9;       // Comparaciones de fp, e.g. if(abs(a-b) < EPS)
 #define ar array        
 typedef vector<int> vi;
 typedef pair<int, int> pi;
-typedef vector<vector<int>> graph;
-typedef vector<vector<pair<int, int>>> wgraph; 
 #define umap unordered_map
-#define uset unordered_set
 #define F first
 #define S second
 #define PB push_back
@@ -27,12 +30,19 @@ typedef vector<vector<pair<int, int>>> wgraph;
 #define all(a) (a).begin(), (a).end() // Aplicar a toda la estructura, e.g. sort(all(a))
 
 // Bucles
-#define FOR(i, a, b) for(int i = a; i < b; i++)
-#define ROF(i, a, b) for(int i = b-1; i>=0; i--)
+#define FOR(i, a, b) for(int i = a; i<= b; i++)
 
 void solve()
 {
-    
+    long n, cx, cy, r, result = 0;
+    cin >> n >> cx >> cy >> r;
+    for(int i = 0; i<n; i++){
+        long tx, ty;
+        cin >> tx >> ty;
+        if((tx-cx)*(tx-cx) + (ty-cy)*(ty-cy) < r*r)
+            result++;
+    }
+    cout << result << "\n";
 }
 
 int main()
@@ -41,17 +51,5 @@ int main()
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-
-    // Usar archivos I/O, comentar al subir
-    // freopen("input.txt", "r", stdin);
-    // freopen("output.txt", "w", stdout);
-
-    // Número de casos
-    int tc = 1;
-    cin >> tc;
-
-    for (int t = 1; t <= tc; t++)
-    {
-        solve();
-    }
+    solve();
 }
