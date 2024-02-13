@@ -29,18 +29,28 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 const ll MOD = 1e9 + 7; // change MOD value
 
 inline void solve() {
-    int n, W;
+    int n, W, sum = 0;
     cin >> n >> W;
     // in part 1, dp[i] was the maximum total VALUE of items with exact WEIGHT i
     // NOW dp[i] = minimum total WEIGHT of items with exact VALUE i
-    vector<long long> dp(1000 * n + 1, 0); // worst case max value is 1000*N
-    for(int i = 0; i<n; i++) {
-        int w, v; 
-        cin >> w >> v;
-        
+    vi w(n), v(n);
+    F0R(i, n) {
+        cin >> w[i] >> v[i];
+        sum += v[i];
     }
-    ll ans = 0;
-
+    vector<long long> dp(sum + 1, 1e18 + 5); 
+    dp[0] = 0;
+    for(int i = 0; i<n; i++) {
+        for(int j = sum - v[i]; j >= 0; j--) {
+            dp[j + v[i]] = min(dp[j + v[i]], dp[j] + w[i]);
+        }
+    }
+    int ans = 0;
+    for(int j = 0; j <= sum; j++) {
+        if(dp[j] <= W){
+            ans = j;
+        }
+    }
     cout << ans << "\n";
 }
 
