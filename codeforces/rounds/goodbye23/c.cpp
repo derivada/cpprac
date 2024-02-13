@@ -31,6 +31,33 @@ const ll MOD = 1e9 + 7; // change MOD value
 inline void solve() {
     int n;
     cin >> n;
+    vi v(n, 0);
+    vector<long long> pre(n, 0);
+    vi odds(n, 0);
+    F0R(i, n) {
+        cin >> v[i];
+        if(i > 0) {
+            pre[i] = pre[i-1] + v[i];
+            if(v[i] % 2) {
+                odds[i] = odds[i-1] + 1;
+            } else {
+                odds[i] = odds[i-1];
+            }
+        } else {
+            pre[0] = v[0];
+            odds[0] = (v[0] % 2);
+        }
+    
+    }
+    cout << v[0] << " ";
+    FOR(i, 1, n) {
+        if(odds[i] % 3 == 0 || odds[i] % 3 == 2) {
+            cout << pre[i] - odds[i]/3 << " ";
+        } else {
+            cout << pre[i] - (odds[i]/3 + 1) << " ";
+        }
+    }
+    cout << "\n";
 }
 
 int main() {

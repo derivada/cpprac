@@ -28,9 +28,19 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
 
+double dist(int x1, int y1, int x2, int y2) {
+    return sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
+}
+
 inline void solve() {
-    int n;
-    cin >> n;
+    int px, py, ax, ay, bx, by;
+    cin >> px >> py >> ax >> ay >> bx >> by;
+
+    double r1 = max(dist(0, 0, ax, ay), dist(ax, ay, px, py));
+    double r2 = max(dist(0, 0, bx, by), dist(bx, by, px, py));
+    double r3 = max(dist(0, 0, ax, ay), max(dist(ax, ay, bx, by)/2, dist(bx, by, px, py)));
+    double r4 = max(dist(0, 0, bx, by), max(dist(bx, by, ax, ay)/2, dist(ax, ay, px, py)));
+    printf("%lf\n", min(r1, min(r2, min(r3, r4))));
 }
 
 int main() {

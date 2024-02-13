@@ -28,9 +28,43 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
 
+// Greedy Approach
 inline void solve() {
     int n;
     cin >> n;
+    int a = 1000000, b = 1000000, total = 0;
+    F0R(i, n){
+        int next;
+        cin >> next;
+        if(a >= b) {
+            if(next > a) {
+                b = next; total++;
+            } else if(next <= b) {
+                b = next;
+            } else {
+                a = next;
+            }
+        } else {
+            if(next > b) {
+                a = next; total++;
+            } else if(next <= a) {
+                a = next;
+            } else {
+                b = next;
+            }
+        }
+    }
+    cout << total << "\n";
+}
+
+// DP Approach
+inline void solve_2() {
+    int n;
+    cin >> n;
+    F0R(i, n){
+        
+
+    }
 }
 
 int main() {
@@ -39,5 +73,5 @@ int main() {
     int tc;
     cin >> tc;
     while (tc--) 
-        solve();
+        solve_2();
 }

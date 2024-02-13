@@ -29,15 +29,21 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 const ll MOD = 1e9 + 7; // change MOD value
 
 inline void solve() {
-    int n;
-    cin >> n;
+    int n, k;
+    cin >> n >> k;
+    vi v(n, 0), dp(n, 2000000000);
+    F0R(i, n) cin >> v[i];
+    dp[0] = 0;
+    for(int i = 1; i<n; i++) {
+        for(int j = 1; j<=k && i-j >= 0; j++) {
+             dp[i] = min(dp[i], dp[i-j] + abs(v[i] - v[i-j]));
+        }
+    }
+    cout << dp[n-1] << "\n";
 }
 
 int main() {
     fastio;
-    // freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
-    int tc;
-    cin >> tc;
-    while (tc--) 
-        solve();
+    // freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout); 
+    solve();
 }

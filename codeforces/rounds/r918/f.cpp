@@ -28,9 +28,26 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
 
+
 inline void solve() {
     int n;
     cin >> n;
+    vector<pi> v;
+    F0R(i, n) {
+        int a, b;
+        cin >> a >> b;
+        v.PB(MP(b, a));
+    }
+    sort(all(v));
+
+    ordered_set<int> t;
+    unsigned long long result = 0;
+    F0R(i, n) {
+        pi pair = v[i];
+        result += t.size() - t.order_of_key(pair.S);
+        t.insert(pair.S);
+    }
+    cout << result << "\n";
 }
 
 int main() {

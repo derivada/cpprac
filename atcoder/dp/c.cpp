@@ -31,13 +31,20 @@ const ll MOD = 1e9 + 7; // change MOD value
 inline void solve() {
     int n;
     cin >> n;
+    int SA = 0, SB = 0, SC = 0;
+    vi a(n, 0), b(n,0), c(n,0);
+    F0R(i, n) cin >> a[i] >> b[i] >> c[i];
+    FOR(i, 0, n) {
+        int t1 = SA, t2 = SB, t3 = SC;
+        SA = max(t2 + a[i], t3 + a[i]);
+        SB = max(t1 + b[i], t3 + b[i]);
+        SC = max(t1 + c[i], t2 + c[i]);
+    }
+    cout << max(SA, max(SB, SC)) << endl;
 }
 
 int main() {
     fastio;
     // freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
-    int tc;
-    cin >> tc;
-    while (tc--) 
-        solve();
+    solve();
 }

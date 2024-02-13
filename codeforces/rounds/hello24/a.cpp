@@ -29,8 +29,13 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 const ll MOD = 1e9 + 7; // change MOD value
 
 inline void solve() {
-    int n;
-    cin >> n;
+    int a, b;
+    cin >> a >> b;
+    if((a+b) % 2 == 0) {
+        cout << "Bob\n";
+    } else {
+        cout << "Alice\n";
+    }
 }
 
 int main() {

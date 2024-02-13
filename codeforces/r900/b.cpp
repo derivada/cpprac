@@ -31,6 +31,18 @@ const ll MOD = 1e9 + 7; // change MOD value
 inline void solve() {
     int n;
     cin >> n;
+    vi ans(n, 0);
+    ans[0] = 2, ans[1] = 3;
+    for(int i = 2; i<n; i++) {
+        int j = ans[i-1] + 1;
+        while((3*j) % (ans[i-2] + ans[i-1]) == 0 || ((ans[i-1] + j) % 3 == 0)) {
+            j++;
+        }
+        ans[i] = j;
+    }
+    F0R(i, n) 
+        cout << ans[i] << " ";
+    cout << "\n";
 }
 
 int main() {

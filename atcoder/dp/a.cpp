@@ -31,13 +31,17 @@ const ll MOD = 1e9 + 7; // change MOD value
 inline void solve() {
     int n;
     cin >> n;
+    vi v(n, 0), dp(n, 0);
+    F0R(i, n) cin >> v[i];
+    dp[1] = abs(v[1] - v[0]);
+    FOR(i, 2, n) {
+        dp[i] = min(dp[i-2] + abs(v[i] - v[i-2]), dp[i-1] + abs(v[i] - v[i-1]));
+    }
+    cout << dp[n-1] << " ";
 }
 
 int main() {
     fastio;
-    // freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
-    int tc;
-    cin >> tc;
-    while (tc--) 
-        solve();
+    // freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout); 
+    solve();
 }

@@ -27,17 +27,34 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define ROF(i, a, b) for (int i = b - 1; i >= 0; i--)
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
+const ll INF = 1e18;
 
 inline void solve() {
-    int n;
-    cin >> n;
+    int n, k, a, b;
+    cin >> n >> k >> a >> b;
+    if(k == 1) {
+        unsigned long long ans = a*(n-1);
+        cout << ans << "\n";
+        return;
+    }
+    unsigned long long ans = 0;
+    while(n > 1) {
+        if(n < k) {
+            ans += (n-1)*a;
+            n = 1;
+        } else if(n % k != 0){
+            ans += (n % k) *a;
+            n -= n%k;
+        } else {
+            ans += min(b, a*(n-n/k));
+            n = n/k;
+        }
+    }
+    cout << ans << "\n";
 }
 
 int main() {
     fastio;
     // freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
-    int tc;
-    cin >> tc;
-    while (tc--) 
-        solve();
+    solve();
 }

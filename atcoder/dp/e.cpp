@@ -29,15 +29,23 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 const ll MOD = 1e9 + 7; // change MOD value
 
 inline void solve() {
-    int n;
-    cin >> n;
+    int n, W;
+    cin >> n >> W;
+    // in part 1, dp[i] was the maximum total VALUE of items with exact WEIGHT i
+    // NOW dp[i] = minimum total WEIGHT of items with exact VALUE i
+    vector<long long> dp(1000 * n + 1, 0); // worst case max value is 1000*N
+    for(int i = 0; i<n; i++) {
+        int w, v; 
+        cin >> w >> v;
+        
+    }
+    ll ans = 0;
+
+    cout << ans << "\n";
 }
 
 int main() {
     fastio;
     // freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
-    int tc;
-    cin >> tc;
-    while (tc--) 
-        solve();
+    solve();
 }

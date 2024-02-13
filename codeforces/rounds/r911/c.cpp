@@ -31,6 +31,19 @@ const ll MOD = 1e9 + 7; // change MOD value
 inline void solve() {
     int n;
     cin >> n;
+    string s;
+    cin >> s;
+    int count = 0, total = 0;
+    F0R(i, n) {
+        if(s[i] == '#') {
+            total += 1 + count/2;
+            count = 0;
+        } else {
+            count++;
+        }
+    }
+    total += 1 + count/2;
+    cout << total << "\n";
 }
 
 int main() {

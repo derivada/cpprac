@@ -31,6 +31,13 @@ const ll MOD = 1e9 + 7; // change MOD value
 inline void solve() {
     int n;
     cin >> n;
+    int ans = 1e9;
+    F0R(i, n) {
+        int d, s;
+        cin >> d >> s;
+        ans = min(ans, d + (s-1)/2);
+    }
+    cout << ans << "\n";
 }
 
 int main() {

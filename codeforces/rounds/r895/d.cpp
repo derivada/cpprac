@@ -28,9 +28,31 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
 
+ll gcd (ll a, ll b) {
+    while (b) {
+        a %= b;
+        swap(a, b);
+    }
+    return a;
+}
+
+ll lcm (ll a, ll b) {
+    return a / gcd(a, b) * b;
+}
+
 inline void solve() {
-    int n;
-    cin >> n;
+    ll n,x,y;
+    ll ans = 0;
+    cin >> n >> x >> y;
+    ll l = lcm(x, y);
+    // find number of unperturbed x
+    ll n1 = (n / x) - (n / l);
+    // find number of unperturbed y
+    ll n2 = (n / y) - (n / l); 
+    // sub sequence 1+2+3+...+n2 and add sequence n+n-1+...+n-n1
+    ans -= (n2 * (n2+1)) / 2;
+    ans += (n1 * (n1+1)) / 2 + n1*(n-n1);
+    cout << ans << "\n";
 }
 
 int main() {

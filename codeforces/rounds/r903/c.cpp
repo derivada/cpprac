@@ -27,10 +27,33 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define ROF(i, a, b) for (int i = b - 1; i >= 0; i--)
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
-
+int n;
 inline void solve() {
-    int n;
     cin >> n;
+    vector<vector<char>> biggest(n/2, vector<char>(n/2, 0));
+    vector<string> strings(n);
+    F0R(i, n) {
+        string s;
+        cin >> s;
+        // (i, j) -> (n-j, n-i) -> (n-i, n-j) -> (n-j , i)
+        F0R(j, n) {
+            biggest[j < n/2 ? i : n-1-j][i < n/2 ? j : n-1-i] = 
+                max(biggest[j < n/2 ? i : n-1-j][i < n/2 ? j : n-1-i], s[j]);
+        }
+        strings[i] = s;
+    }
+    ll total = 0;
+    F0R(i, n/2) {
+        F0R(j, n/2)
+            cout << biggest[i][j] << " ";
+        cout << "\n";
+    }
+    F0R(i, n) {
+        F0R(j, n) {
+            total += biggest[j < n/2 ? i : n-1-j][i < n/2 ? j : n-1-i] - strings[i][j];
+        }
+    }
+    cout << total << "\n";
 }
 
 int main() {

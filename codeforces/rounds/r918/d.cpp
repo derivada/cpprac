@@ -1,8 +1,5 @@
 #include <bits/stdc++.h>
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
 using namespace std;
-using namespace __gnu_pbds;
 #define ll long long	// 64 bits
 #define ld long double	// 80 bits
 #define PI 3.1415926535897932384626433832795l
@@ -10,9 +7,6 @@ typedef vector<int> vi;
 typedef pair<int, int> pi;
 typedef vector<vector<int>> graph;
 typedef vector<vector<pair<int, int>>> wgraph;
-// set with also order_of_key(k) and find_by_order(k)
-template<typename T>
-using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 #define umap unordered_map
 #define uset unordered_set
 #define F first
@@ -31,6 +25,30 @@ const ll MOD = 1e9 + 7; // change MOD value
 inline void solve() {
     int n;
     cin >> n;
+    string s;
+    cin >> s;
+    int i = 0;
+    vi points;
+    while(i+3 < n) {
+        if(s[i+3] =='b' || s[i+3] == 'c' || s[i+3] == 'd') {
+            // CVC
+            points.push_back(i+2);
+            i+=3;
+        } else {
+            // CV
+            points.push_back(i+1);
+            i+=2;
+        }
+    }
+    int j = 0;
+    F0R(i, n) {
+        cout << s[i];
+        if(j < points.size() && points[j] == i){
+            cout << '.';
+            j++;
+        }
+    }
+    cout << "\n";
 }
 
 int main() {

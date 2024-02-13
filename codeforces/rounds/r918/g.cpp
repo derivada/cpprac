@@ -27,10 +27,49 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define ROF(i, a, b) for (int i = b - 1; i >= 0; i--)
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
+const ll inf = 1e18;
 
 inline void solve() {
-    int n;
-    cin >> n;
+    int n, m;
+    cin >> n >> m;
+    wgraph g(n);
+    
+    F0R(i, m) {
+        int u, v, w;
+        cin >> u >> v >> w;
+        u--, v--;
+        g[u].emplace_back(v, w);
+        g[v].emplace_back(u, w);
+    }
+    vi slows(n);
+    F0R(i, n) {
+        cin >> slows[i];
+    }
+
+    // dijkstra with set
+    vector<vector<ll>> dist(n, vector<ll>(1001, inf));
+    vector<vector<bool>> vis(n, vector<bool>(1001, false));
+    dist[0][slows[0]] = 0;
+    priority_queue<array<ll, 3>> q;
+    q.push({0, 0, slows[0]});
+    while(!q.empty()) {
+        int u = q.top()[1], k = q.top()[2];
+        q.pop();
+        if(vis[u][k] || dist[u][k] == inf) continue;
+        vis[u][k] = true;
+        for(auto x: g[u]) {
+            int v = x.first, w = x.second;
+            int c = min(slows[v], k);
+            if(dist[v][c] > dist[u][k] + 1LL * w * k) {
+                dist[v][c] = dist[u][k] + 1LL * w * k;
+                q.push({-dist[v][c], v, c});
+            }
+        }
+    }
+    long long result = inf;
+    FOR(i, 1, 1001)
+        result = min(result, dist[n-1][i]);
+    cout << result << "\n";
 }
 
 int main() {

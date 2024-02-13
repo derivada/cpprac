@@ -29,8 +29,42 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 const ll MOD = 1e9 + 7; // change MOD value
 
 inline void solve() {
-    int n;
+    int n, q;
+    string s;
     cin >> n;
+    vi v(n,0), pre(n,0); // numbers and XOR prefix sum
+    int A = 0, B = 0; // A for 0s, B for 1s
+    F0R(i, n) {
+        cin >> v[i];
+        if(!i) {
+            pre[0] = v [0];
+        } else {
+            pre[i] = pre[i-1] ^ v[i];
+        }
+    }
+    cin >> s >> q;
+    F0R(i, n) {
+        if(s[i] == '0') A ^= v[i];
+        else B ^= v[i];
+    }
+    F0R(i, q) {
+        int t, l, r, g;
+        cin >> t;
+        if(t == 1)  {
+            cin >> l >> r; l--, r--;
+            A ^= pre[r];
+            B ^= pre[r];
+            if(l-1 >= 0){
+                A ^= pre[l-1];
+                B ^= pre[l-1];
+            }
+        } else {
+            cin >> g;
+            if(!g) cout << A << " ";
+            else cout << B << " ";
+        }
+    }
+    cout << "\n";
 }
 
 int main() {
