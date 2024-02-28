@@ -28,31 +28,43 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
 
-
 inline void solve() {
-    int n, x;
-    cin >> n >> x;
+    int n;
+    cin >> n;
+    vector<string> s(n);
+    F0R(i, n)
+        cin >> s[i];
 
-    vi w(n), p(n); //price w, number of pages p
-    F0R(i, n) cin >> p[i];
-    F0R(i, n) cin >> w[i];
-    
-    vi dp(x+1, 0);
-    for(int i = 0; i<n; i++) {
-        for(int weight = x; weight >= 0; weight--) {
-            if(weight - p[i] >= 0) {
-                dp[weight] = max(dp[weight], dp[weight-p[i]] + w[i]);
+    pi first = MP(-1,-1), last;
+
+    F0R(i, n) {
+        F0R(j, n) {
+            if(s[i][j] == '1') {
+                if(first == MP(-1, -1))
+                    first = MP(i,j);
+                last = MP(i,j);
             }
         }
     }
-    int ans = 0;
-    for(int weight = 1; weight <= x; weight++) {
-        ans = max(ans, dp[weight]);
+    int x = first.F, y = first.S;
+    int x2 = last.F, y2 = last.S;
+    if(s[min(n-1, x+1)][min(n-1, y+1)] == '1' &&
+        s[max(0, x2-1)][max(0, y2-1)] == '1' &&
+        s[min(n-1, x)][min(n-1, y+1)] == '1' &&
+        s[max(0, x2)][max(0, y2-1)] == '1' &&
+        s[min(n-1, x+1)][min(n-1, y)] == '1' &&
+        s[max(0, x2-1)][max(0, y2)] == '1') {
+            cout << "SQUARE\n";
+    } else{
+        cout << "TRIANGLE\n";
     }
-    cout << ans << "\n";
 }
 
 int main() {
-    fastio; 
-    solve();
+    fastio;
+    // freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
+    int tc;
+    cin >> tc;
+    while (tc--) 
+        solve();
 }

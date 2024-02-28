@@ -28,31 +28,39 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
 
-
 inline void solve() {
-    int n, x;
-    cin >> n >> x;
+    int n, sum = 0;
+    cin >> n;
+    vi coins(n,0);
+    F0R(i, n){
+        cin >> coins[i];
+        sum += coins[i];
+    }
+    vector<bool> dp(sum+1, 0);
+    dp[0] = true;
 
-    vi w(n), p(n); //price w, number of pages p
-    F0R(i, n) cin >> p[i];
-    F0R(i, n) cin >> w[i];
-    
-    vi dp(x+1, 0);
-    for(int i = 0; i<n; i++) {
-        for(int weight = x; weight >= 0; weight--) {
-            if(weight - p[i] >= 0) {
-                dp[weight] = max(dp[weight], dp[weight-p[i]] + w[i]);
-            }
+    for(int c = 0; c < n; c++) {
+        for(int i = sum; i>=0; i--) {
+            if(dp[i]) dp[i+coins[c]] = true;
         }
     }
-    int ans = 0;
-    for(int weight = 1; weight <= x; weight++) {
-        ans = max(ans, dp[weight]);
+    int total = 0;
+    string s = "\n";
+    for(int i = 1; i<=sum; i++) {
+        if(dp[i]){
+            total++;
+        }
     }
-    cout << ans << "\n";
+    cout << total << "\n";
+    for(int i = 1; i<=sum; i++) {
+        if(dp[i]){
+            cout << i << " ";
+        }
+    }
+    cout << "\n";
 }
 
 int main() {
-    fastio; 
+    fastio;
     solve();
 }

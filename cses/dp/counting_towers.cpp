@@ -28,31 +28,27 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
 
+vector<vector<ll>> dp(1e6+1, vector<ll>(2, 0));
+int last = 1;
 
 inline void solve() {
-    int n, x;
-    cin >> n >> x;
-
-    vi w(n), p(n); //price w, number of pages p
-    F0R(i, n) cin >> p[i];
-    F0R(i, n) cin >> w[i];
-    
-    vi dp(x+1, 0);
-    for(int i = 0; i<n; i++) {
-        for(int weight = x; weight >= 0; weight--) {
-            if(weight - p[i] >= 0) {
-                dp[weight] = max(dp[weight], dp[weight-p[i]] + w[i]);
-            }
-        }
+    int n;
+    cin >> n;
+    // find best entry in dp using binary search
+    for(int i = last; i<n; i++) {
+        dp[i][0] = ((dp[i-1][0] * 4) + dp[i-1][1]) % MOD;
+        dp[i][1] = ((dp[i-1][1] * 2) + dp[i-1][0]) % MOD;
     }
-    int ans = 0;
-    for(int weight = 1; weight <= x; weight++) {
-        ans = max(ans, dp[weight]);
-    }
-    cout << ans << "\n";
+    last = max(last, n);
+    cout << (dp[n-1][0] + dp[n-1][1]) % MOD << "\n";
 }
 
 int main() {
-    fastio; 
-    solve();
+    dp[0][0] = dp[0][1] = 1;
+    fastio;
+    // freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
+    int tc;
+    cin >> tc;
+    while (tc--) 
+        solve();
 }

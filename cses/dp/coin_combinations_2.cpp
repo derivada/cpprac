@@ -27,33 +27,30 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define ROF(i, a, b) for (int i = b - 1; i >= 0; i--)
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
-
+ 
 inline void solve() {
     int n, x;
     cin >> n >> x;
     vi c(n,0);
     F0R(i, n)
         cin >> c[i];
-    // dp[i][j] = number of ways to get a ordered sequence of sum i
-    // where the last term is j
-
-    // dp[i][j] = number of ways to get a ordered sequence of sum i
-    // where the last term is <= j
-    vector<vector<int>> dp(x+1, vector<int>(n, 0));
-    dp[0][0] = 1;
-
-    for(int sum = 1; sum <= x; sum++) {
-        for(int next = 0; next < n; next++) {
-            if(sum - c[next] >= 0)
-                dp[sum][next] = (dp[sum][next] + dp[sum - c[next]][next]) % MOD;
-            if(next > 0) {
-                dp[sum][next] = (dp[sum][next] + dp[sum][next-1]) % MOD;
-            }
+    vi dp(x+1, 0);
+    dp[0] = 1;
+    sort(all(c));
+    for(int j = 0; j<n; j++) {
+        for(int sum = 1; sum <= x; sum++) {
+            if(sum - c[j] >= 0)
+                dp[sum] = (dp[sum] + dp[sum - c[j]]) % MOD;
         }
     }
-    cout << dp[x][n-1] << "\n";
+ 
+    if(dp[x] == 1e9) {
+        cout << "-1\n";
+    } else {
+        cout << dp[x] << "\n";
+    }
 }
-
+ 
 int main() {
     fastio;
     solve();

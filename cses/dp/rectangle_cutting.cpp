@@ -28,31 +28,47 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
 
+vector<vector<int>> dp(501, vector<int>(501, -1));
+
+inline int solve_rect(int a, int b) {
+    if(dp[a][b] != -1)
+        return dp[a][b];
+    if(a == b) {
+        dp[a][b] = 0;
+        return 0;
+    }
+    int cuts = 1e9;
+    // cut horizontally
+    // a = 1 -> no cuts
+    // a = 2 -> 1 cut
+    // a = 3 -> 1 cut
+    // a = 4 -> 2 cuts
+    for(int i = 1; i<=a/2 && a-i>0; i++) {
+        cuts = min(cuts, solve_rect(i, b) + solve_rect(a-i, b) + 1);
+    }
+    // cut vertically
+    for(int i = 1; i<=b/2 && b-i>0; i++) {
+        cuts = min(cuts, solve_rect(a, i) + solve_rect(a, b-i) + 1);
+    }
+    dp[a][b] = cuts;
+    return dp[a][b];
+}
 
 inline void solve() {
-    int n, x;
-    cin >> n >> x;
+    int a, b;
+    cin >> a >> b;
+    cout << solve_rect(a, b) << "\n";
 
-    vi w(n), p(n); //price w, number of pages p
-    F0R(i, n) cin >> p[i];
-    F0R(i, n) cin >> w[i];
-    
-    vi dp(x+1, 0);
-    for(int i = 0; i<n; i++) {
-        for(int weight = x; weight >= 0; weight--) {
-            if(weight - p[i] >= 0) {
-                dp[weight] = max(dp[weight], dp[weight-p[i]] + w[i]);
-            }
-        }
-    }
-    int ans = 0;
-    for(int weight = 1; weight <= x; weight++) {
-        ans = max(ans, dp[weight]);
-    }
-    cout << ans << "\n";
+    // cout << " debug \n";
+    // F0R(i, a){
+    //     F0R(j, b) {
+    //         cout << dp[i+1][j+1] << " ";
+    //     }
+    //     cout << "\n";
+    // }
 }
 
 int main() {
-    fastio; 
+    fastio;
     solve();
 }

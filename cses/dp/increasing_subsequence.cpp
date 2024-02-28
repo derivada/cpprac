@@ -27,32 +27,30 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define ROF(i, a, b) for (int i = b - 1; i >= 0; i--)
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
-
-
+ 
 inline void solve() {
-    int n, x;
-    cin >> n >> x;
-
-    vi w(n), p(n); //price w, number of pages p
-    F0R(i, n) cin >> p[i];
-    F0R(i, n) cin >> w[i];
-    
-    vi dp(x+1, 0);
-    for(int i = 0; i<n; i++) {
-        for(int weight = x; weight >= 0; weight--) {
-            if(weight - p[i] >= 0) {
-                dp[weight] = max(dp[weight], dp[weight-p[i]] + w[i]);
-            }
+    int n;
+    cin >> n;
+    vi v(n);
+    set<pi> ord;
+    F0R(i, n){ 
+        cin >> v[i];
+    }
+    vi dp(n);
+    dp[0] = 1;
+    for(int i = 1; i<n; i++) {
+        for(int j = i-1; j>=0; j--) {
+            if(v[i] > v[j])
+                dp[i] = max(dp[i], dp[j] + 1);
         }
     }
     int ans = 0;
-    for(int weight = 1; weight <= x; weight++) {
-        ans = max(ans, dp[weight]);
-    }
+    F0R(i,n)
+        ans = max(ans, dp[i]);
     cout << ans << "\n";
 }
-
+ 
 int main() {
-    fastio; 
+    fastio;
     solve();
 }

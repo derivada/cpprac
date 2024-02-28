@@ -28,31 +28,23 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
 
-
 inline void solve() {
-    int n, x;
-    cin >> n >> x;
+    string s; cin >> s;
+    int a = 0, b = 0;
+    F0R(i, 5) {
+        if(s[i] == 'A') a++;
+        else b++;
+    }
 
-    vi w(n), p(n); //price w, number of pages p
-    F0R(i, n) cin >> p[i];
-    F0R(i, n) cin >> w[i];
-    
-    vi dp(x+1, 0);
-    for(int i = 0; i<n; i++) {
-        for(int weight = x; weight >= 0; weight--) {
-            if(weight - p[i] >= 0) {
-                dp[weight] = max(dp[weight], dp[weight-p[i]] + w[i]);
-            }
-        }
-    }
-    int ans = 0;
-    for(int weight = 1; weight <= x; weight++) {
-        ans = max(ans, dp[weight]);
-    }
-    cout << ans << "\n";
+    if(a>b) cout << "A\n";
+    else cout << "B\n";
 }
 
 int main() {
-    fastio; 
-    solve();
+    fastio;
+    // freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
+    int tc;
+    cin >> tc;
+    while (tc--) 
+        solve();
 }

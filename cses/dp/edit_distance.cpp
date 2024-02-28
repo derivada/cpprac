@@ -28,31 +28,31 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
 
-
 inline void solve() {
-    int n, x;
-    cin >> n >> x;
+    string s, t;
+    cin >> s >> t;
+    int n = s.length(), m = t.length();
 
-    vi w(n), p(n); //price w, number of pages p
-    F0R(i, n) cin >> p[i];
-    F0R(i, n) cin >> w[i];
-    
-    vi dp(x+1, 0);
-    for(int i = 0; i<n; i++) {
-        for(int weight = x; weight >= 0; weight--) {
-            if(weight - p[i] >= 0) {
-                dp[weight] = max(dp[weight], dp[weight-p[i]] + w[i]);
-            }
+    vector<vi> dist(n+1, vi(m+1, (int) 1e9 + 5));
+    dist[0][0] = 0;
+    for(int i = 1; i<=n; i++) {
+        dist[i][0] = dist[i-1][0] + 1;
+    }
+    for(int j = 1; j<=m; j++) {
+        dist[0][j] = dist[0][j-1] + 1;
+    }
+    for(int i = 1; i<=n; i++) {
+        for(int j = 1; j<=m; j++) {
+            dist[i][j] = min(dist[i][j-1] + 1, 
+                        min(dist[i-1][j] + 1,
+                            dist[i-1][j-1] + (s[i-1] != t[j-1])));
         }
     }
-    int ans = 0;
-    for(int weight = 1; weight <= x; weight++) {
-        ans = max(ans, dp[weight]);
-    }
-    cout << ans << "\n";
+    cout << dist[n][m] << "\n";
 }
 
 int main() {
-    fastio; 
+    fastio;
+    // freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
     solve();
 }
