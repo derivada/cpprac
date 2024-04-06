@@ -31,24 +31,22 @@ const ll MOD = 1e9 + 7; // change MOD value
 inline void solve() {
     int n;
     cin >> n;
-    vi v(n);
-    set<pi> ord;
-    F0R(i, n){ 
-        cin >> v[i];
+    int sum = n*(n+1)/2;
+    if(sum % 2 != 0){
+        cout << "0\n"; return;
     }
-    vi dp(n+1, 1e9); // smallest value of the sequence of length i
-    dp[0] = -1;
-    for(int i = 0; i<n; i++) {
-        // binary search for the index
-        int l = upper_bound(dp.begin(), dp.end(), v[i]) - dp.begin();
-        // check if can insert in this position
-        if (dp[l-1] < v[i] && v[i] < dp[l])
-            dp[l] = v[i];
+    vector<vi> dp(n, vi(sum+1, 0)); // dp[i][s] = # of ways to reach sum s using elements 1..i
+    // dp[i][s] = dp[i-1][s] + dp[i][s-i]
+    dp[0][0] = 1;
+    int target = sum/2;
+    for(int i = 1; i<n; i++) {
+        for(int s = 0; s<=sum; s++) {
+            dp[i][s] = dp[i-1][s];
+            if(s-i>=0)
+                dp[i][s] = (dp[i][s] + dp[i-1][s-i]) % MOD;
+        }
     }
-    int ans = 0;
-    F0R(i,n+1)
-        if(dp[i] < 1e9) ans = i;
-    cout << ans << "\n";
+    cout << dp[n-1][target] << "\n";
 }
  
 int main() {

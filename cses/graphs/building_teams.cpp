@@ -27,31 +27,49 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define ROF(i, a, b) for (int i = b - 1; i >= 0; i--)
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
- 
+
 inline void solve() {
-    int n;
-    cin >> n;
-    vi v(n);
-    set<pi> ord;
-    F0R(i, n){ 
-        cin >> v[i];
+    int n, m;
+    cin >> n >> m;
+    vector<vector<int>> g(n+1);
+    F0R(i, m) {
+        int a, b;
+        cin >> a >> b;
+        g[a].PB(b);
+        g[b].PB(a);
     }
-    vi dp(n+1, 1e9); // smallest value of the sequence of length i
-    dp[0] = -1;
-    for(int i = 0; i<n; i++) {
-        // binary search for the index
-        int l = upper_bound(dp.begin(), dp.end(), v[i]) - dp.begin();
-        // check if can insert in this position
-        if (dp[l-1] < v[i] && v[i] < dp[l])
-            dp[l] = v[i];
+    // BFS with 2-coloring for finding if graph is bipartite and a possible matching
+    vi color(n+1, -1);
+    queue<int> q;
+    bool is_bipartite = true;
+    for (int st = 1; st <= n; ++st) {
+        if (color[st] == -1) {
+            q.push(st);
+            color[st] = 0;
+            while (!q.empty()) {
+                int v = q.front();
+                q.pop();
+                for (int u : g[v]) {
+                    if (color[u] == -1) {
+                        color[u] = color[v] ^ 1;
+                        q.push(u);
+                    } else {
+                        is_bipartite &= color[u] != color[v];
+                    }
+                }
+            }
+        }
     }
-    int ans = 0;
-    F0R(i,n+1)
-        if(dp[i] < 1e9) ans = i;
-    cout << ans << "\n";
+    if(is_bipartite)
+        for(int i = 1; i<=n; i++)
+            cout << color[i]+1 << " ";
+    else
+        cout << "IMPOSSIBLE";
+    
+    cout << "\n";
 }
- 
 int main() {
     fastio;
+    // freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
     solve();
 }

@@ -27,31 +27,51 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define ROF(i, a, b) for (int i = b - 1; i >= 0; i--)
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
- 
+
 inline void solve() {
-    int n;
-    cin >> n;
-    vi v(n);
-    set<pi> ord;
-    F0R(i, n){ 
-        cin >> v[i];
+    int n, k;
+    cin >> n >> k;
+    vi a(n), x(n);
+    F0R(i, n) {
+        cin >> a[i];
     }
-    vi dp(n+1, 1e9); // smallest value of the sequence of length i
-    dp[0] = -1;
-    for(int i = 0; i<n; i++) {
-        // binary search for the index
-        int l = upper_bound(dp.begin(), dp.end(), v[i]) - dp.begin();
-        // check if can insert in this position
-        if (dp[l-1] < v[i] && v[i] < dp[l])
-            dp[l] = v[i];
+    F0R(i, n){
+        cin >> x[i];
     }
-    int ans = 0;
-    F0R(i,n+1)
-        if(dp[i] < 1e9) ans = i;
-    cout << ans << "\n";
+    map<long long, long long> m;
+    F0R(i, n) {
+        m[abs(x[i])] += a[i];
+    }
+    long long turn = 0, extra_bullets = 0;
+    for(auto x: m) {
+        long long pos = x.first, health = x.second;
+        //cout << "pos, health, extra" << pos << " " << health << " " << extra_bullets << "\n";
+        if(health < extra_bullets) {
+            extra_bullets -= health;
+            continue;
+        }
+        health -= extra_bullets;
+        if(health%k == 0) {
+            turn += health/k;
+            extra_bullets = 0;
+        } else {
+            turn += health/k + 1;
+            extra_bullets = k - health%k;
+        }
+        //cout << "new turn " << turn << "\n";
+        if(pos < turn) {
+            cout << "NO\n";
+            return;
+        }
+    }
+    cout << "YES\n";
 }
- 
+
 int main() {
     fastio;
-    solve();
+    // freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
+    int tc;
+    cin >> tc;
+    while (tc--) 
+        solve();
 }

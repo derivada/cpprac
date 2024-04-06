@@ -27,31 +27,30 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define ROF(i, a, b) for (int i = b - 1; i >= 0; i--)
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
- 
+
 inline void solve() {
-    int n;
+    int n, gap = 0, ans = 0;
+    bool seen = false;
     cin >> n;
-    vi v(n);
-    set<pi> ord;
-    F0R(i, n){ 
-        cin >> v[i];
+    F0R(i, n) {
+        int x;
+        cin >> x;
+        if(x) {
+            seen = true;
+            ans += gap;
+            gap = 0;
+        } else if(seen){
+            gap++;
+        }
     }
-    vi dp(n+1, 1e9); // smallest value of the sequence of length i
-    dp[0] = -1;
-    for(int i = 0; i<n; i++) {
-        // binary search for the index
-        int l = upper_bound(dp.begin(), dp.end(), v[i]) - dp.begin();
-        // check if can insert in this position
-        if (dp[l-1] < v[i] && v[i] < dp[l])
-            dp[l] = v[i];
-    }
-    int ans = 0;
-    F0R(i,n+1)
-        if(dp[i] < 1e9) ans = i;
     cout << ans << "\n";
 }
- 
+
 int main() {
     fastio;
-    solve();
+    // freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
+    int tc;
+    cin >> tc;
+    while (tc--) 
+        solve();
 }
