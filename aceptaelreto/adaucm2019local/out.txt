@@ -1,0 +1,4 @@
+30 NO
+20 NO
+5 SI
+SIN CAMINO
