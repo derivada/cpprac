@@ -29,21 +29,21 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 const ll MOD = 1e9 + 7; // change MOD value
 
 inline void solve() {
-    int n, x; cin >> n >> x;
-    vector<int> v(n);
+    int n, m; cin >> n >> m;
+    multiset<int, greater<int>> ms; ms.insert(-1);
     F0R(i, n){
-        cin >> v[i];
+        int x; cin >> x; ms.insert(x);
     }
-    sort(all(v));
-
-    int i = 0, j = n-1, ans = 0;
-    while(i < j) {
-        if(v[i] + v[j] <= x) {
-            i++;
+    F0R(i, m) {
+        int p; cin >> p;
+        auto it = ms.lower_bound(p);
+        if(it != ms.end()) {
+            cout << *it << "\n";
+            ms.erase(it);
+        } else {
+            cout << "-1\n";
         }
-        j--, ans++;
-    }    
-    cout << ans+(j==i) << "\n";
+    }
 }
 
 int main() {
