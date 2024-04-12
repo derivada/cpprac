@@ -28,30 +28,30 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
 
-inline void solve() {
+inline bool solve() {
     int n;
     cin >> n;
-}
-
-int main() {
-    fastio;
-    // freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
-    int tc;
-    cin >> tc;
-    while (tc--) 
-        solve();
-}
-
-/*
-inline bool solve() {
-    int n; cin >> n;
-    if(!cin) return false;
-
-
+    if(!n) return false;
+    unordered_map<int, int> m;
+    int ans = 0, ans_i = -1;
+    F0R(i, n) {
+        int x; cin >> x;
+        if(m.find(x) == m.end()) {
+            m[x] = 1;
+        } else {
+            m[x] = m[x] + 1; 
+        }
+        if(m[x] > ans) {
+            ans = m[x];
+            ans_i = x;
+        }
+    }
+    cout << ans_i << "\n";
     return true;
 }
+
+
 int main() {
     fastio;
     while(solve());
 }
-*/

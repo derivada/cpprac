@@ -29,29 +29,44 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 const ll MOD = 1e9 + 7; // change MOD value
 
 inline void solve() {
-    int n;
-    cin >> n;
+    int n, m;
+    cin >> n >> m;
+    vector<vi> adj(n+1);
+    F0R(i, m) {
+        int u, v; cin >> u >> v;
+        adj[u].PB(v);
+        adj[v].PB(u);
+    }
+    vector<bool> used(n+1, false);
+    queue<int> q;
+    int comp_n = 0; ll prod = 1;
+    for(int i = 1; i<=n; i++) {
+        if(used[i]) continue;
+        q.push(i);
+        comp_n ++;
+        ll comp_counter = 1;
+        used[i] = true;
+        while(!q.empty()) {
+            int v = q.front();
+            q.pop();
+            for(int u: adj[v]) {
+                if(!used[u]) {
+                    used[u] = true;
+                    comp_counter++;
+                    q.push(u);
+                }
+            }
+        }
+
+        prod = (prod * comp_counter) % MOD;
+    }
+    cout << comp_n << " " << prod << "\n";
 }
 
 int main() {
     fastio;
-    // freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
     int tc;
     cin >> tc;
     while (tc--) 
         solve();
 }
-
-/*
-inline bool solve() {
-    int n; cin >> n;
-    if(!cin) return false;
-
-
-    return true;
-}
-int main() {
-    fastio;
-    while(solve());
-}
-*/

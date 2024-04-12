@@ -29,8 +29,42 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 const ll MOD = 1e9 + 7; // change MOD value
 
 inline void solve() {
-    int n;
-    cin >> n;
+    int n, m;
+    cin >> n >> m;
+    vector<vi> g(n+1);
+
+    F0R(i, m) {
+        int u, v; cin >> u >> v;
+        g[u].PB(v); g[v].PB(u);
+    }
+    vi color(n+1, -1);
+    queue<int> q;
+    bool is_bipartite = true;
+    for(int st = 1; st <=n; st++) {
+        if(color[st] == -1) {
+            q.push(st);
+            color[st] = 0;
+            while(!q.empty()) {
+                int v = q.front();
+                q.pop();
+                for(int u: g[v]) {
+                    if(color[u] == -1) {
+                        color[u] = color[v] ^1;
+                        q.push(u);
+                    } else {
+                        is_bipartite &= color[u] != color[v];
+                    }
+                }
+            }
+        }
+    }
+
+    if(is_bipartite) {
+        cout << "Que comience la batalla\n";
+    } else {
+        cout << "Mejor nos vamos de cena o algo\n";
+    }
+
 }
 
 int main() {

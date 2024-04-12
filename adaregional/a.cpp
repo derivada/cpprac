@@ -7,6 +7,7 @@ using namespace __gnu_pbds;
 #define ld long double	// 80 bits
 #define PI 3.1415926535897932384626433832795l
 typedef vector<int> vi;
+typedef vector<pair<int,int>> vp;
 typedef pair<int, int> pi;
 typedef vector<vector<int>> graph;
 typedef vector<vector<pair<int, int>>> wgraph;
@@ -28,21 +29,44 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
 
-inline void solve() {
-    int n;
-    cin >> n;
-    
-    
+inline bool solve() {
+    int x, m;
+    cin >> x;
+    if(!cin) return false;
+    cin >> m;
+    vi w, p;
+    vector<ll> dp(x+1, 0);
+    int c0, d0; cin >> c0 >> d0;
+    F0R(i, x/c0) {
+        w.PB(d0); p.PB(c0);
+    }
+    F0R(i, m) {
+        int a, b, c, d; cin >> a >> b >> c >> d;
+        int amount = min(a / b, x / c);
+        F0R(j, amount) {
+            w.PB(d); p.PB(c);
+        }
+    }
 
+    int n = w.size();
+    for(int i = 0; i<n; i++) {
+        for(int weight = x; weight >= 0; weight--) {
+            if(weight - p[i] >= 0) {
+                dp[weight] = max(dp[weight], dp[weight-p[i]] + w[i]);
+            }
+        }
+    }
+    ll ans = 0;
+    for(int weight = 1; weight <= x; weight++) {
+        ans = max(ans, dp[weight]);
+    }
+    cout << ans << "\n";
+    return true;
 }
 
 int main() {
     fastio;
-    // freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
-    int tc;
-    cin >> tc;
-    while (tc--) 
-        solve();
+    while(solve());
 }
 
 /*

@@ -28,30 +28,53 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
 
-inline void solve() {
-    int n;
-    cin >> n;
-}
 
-int main() {
-    fastio;
-    // freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
-    int tc;
-    cin >> tc;
-    while (tc--) 
-        solve();
-}
-
-/*
 inline bool solve() {
-    int n; cin >> n;
+    int f; cin >> f;
     if(!cin) return false;
-
-
+    int c; cin >> c;
+    vector<vector<ll>> pre(f, vector<ll>(c, 0));
+    vector<vi> arr(f, vi(c));
+    F0R(i, f) {
+        F0R(j, c) {
+            cin >> arr[i][j];
+        }
+    }
+    pre[0][0] = arr[0][0];
+    for(int i = 1; i<f; i++) {
+        pre[i][0] = pre[i-1][0] + arr[i][0];
+    }
+    for(int j = 1; j<c; j++) {
+        pre[0][j] = pre[0][j-1] + arr[0][j];
+    }
+    for(int i = 1; i<f; i++) {
+        for(int j = 1; j<c; j++) {
+            pre[i][j] = -pre[i-1][j-1] + pre[i][j-1] + pre[i-1][j] + arr[i][j];
+        }
+    }
+    int q;
+    cin >> q;
+    ll m = -1, ans = -1;
+    F0R(i, q) {
+        int id, x1, y1, x2, y2; cin >> id >> x1 >> y1 >> x2 >> y2;
+        x1--, y1--, x2--, y2--;
+        ll sum = pre[x2][y2];
+        if(x1-1 >= 0)
+            sum -=  pre[x1-1][y2];
+        if(y1-1 >=0)
+            sum -= pre[x2][y1-1];
+        if(x1-1 >= 0 && y1-1 >= 0)
+            sum += pre[x1-1][y1-1];
+        
+        if(sum > m) {
+            m = sum;
+            ans = id;
+        }
+    } 
+    cout << ans << " " << m << "\n";
     return true;
 }
 int main() {
     fastio;
     while(solve());
 }
-*/
