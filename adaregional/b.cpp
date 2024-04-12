@@ -46,6 +46,7 @@ const ll MOD = 1e9 + 7; // change MOD value
 
 
 inline bool solve() {
+    // WA
     int n; cin >> n;
     vector<string> words(n);
     vi b, m;
