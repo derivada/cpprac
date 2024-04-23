@@ -19,7 +19,6 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define S second
 #define PB push_back
 #define MP make_pair
-#define debug(x) cout << #x << " is " << x << endl
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()  // all the structure
 #define F0R(i, n) for (int i = 0; i < n; i++)
@@ -29,16 +28,37 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
 
+vi v, dp;
+int n;
+
+inline int search(int health, int i) {
+    if(i == n)
+        return 0;
+    if(dp[i] != -1)
+        return dp[i];
+    int ans = 0;
+    if(v[i] >= 0) {
+        ans = 1 + search(health + v[i], i+1);
+    } else {
+        // drink it
+        if(health + v[i] >= 0) {
+            ans = max(ans, 1 + search(health + v[i], i+1));
+        }
+        // not drink it
+        ans = max(ans, search(health, i+1));
+    }
+    dp[i] = ans;
+    return ans;
+}
+
 inline void solve() {
-    int n;
     cin >> n;
+    v.clear(); v.resize(n); dp.assign(n, -1);
+    F0R(i, n) cin >> v[i];
+    cout << search(0, 0) << "\n";
 }
 
 int main() {
     fastio;
-    // freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
-    int tc;
-    cin >> tc;
-    while (tc--) 
-        solve();
+    solve();
 }

@@ -32,6 +32,18 @@ const ll MOD = 1e9 + 7; // change MOD value
 inline void solve() {
     int n;
     cin >> n;
+    string s;
+    cin >> s;
+    int d = 0;
+    unordered_map<double, int> m;
+    F0R(i, n) {
+        if(s[i] == 'D') 
+            d++;
+        double r = (double) d/(i+1);
+        m[r] += 1;
+        cout << m[r] << " ";
+    }
+    cout << "\n";
 }
 
 int main() {

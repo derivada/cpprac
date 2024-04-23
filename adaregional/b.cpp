@@ -28,141 +28,104 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
 
-/*inline void solve() {
+const int K = 26;
+
+// my_trie vertex structure
+struct Vertex {
+    int next[K];
+    bool output = false;
+
+    bool bad = false;
+    bool good = false;
+
+    Vertex() {
+        fill(begin(next), end(next), -1);
+    }
+};
+
+vector<Vertex> my_trie(1);
+
+// Añadir una string al my_trie
+void add_string() {
+    string s;
+    int v = 0;
+
+    cin >> s;
+
+    bool good = s[0] == '+';
+    FOR(i,1,s.length()) {
+        char ch = s[i];
+        int c = ch - 'a';
+        if (my_trie[v].next[c] == -1) {
+            my_trie[v].next[c] = my_trie.size();
+            my_trie.emplace_back();
+        }
+        if (good)
+            my_trie[v].good = true;
+        else
+            my_trie[v].bad = true;
+
+        v = my_trie[v].next[c];
+    }
+    if (!good) {
+        my_trie[v].output = true;
+        my_trie[v].bad = true;
+    } else
+        my_trie[v].good = true;
+}
+
+inline void solve() {
     int n;
+
     cin >> n;
 
+    FOR(i,0,n)
+        add_string();
+    
+    stack<pair<int, string>> st;
 
-}*/
+    st.push(MP(0, ""));
 
-/*int main() {
-    fastio;
-    // freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
-    int tc;
-    cin >> tc;
-    while (tc--) 
-        solve();
-}*/
+    bool bad = false;
 
-
-inline bool solve() {
-    // WA
-    int n; cin >> n;
-    vector<string> words(n);
-    vi b, m;
-    F0R(i, n){
-        cin >> words[i];
-    }
-    sort(all(words), [](string &left, string &right) {
-        int m = min(left.size(), right.size());
-        FOR(i, 1, m) {
-            if(left[i] > right[i]) {
-                return 0;
-            } else if(left[i] < right[i]) {
-                return 1;
-            }   
-        }
-        if(left.size() < right.size()) {
-            return 1;
-        } else if(left.size() > right.size()) {
-            return 0;
-        }
-        return 0;
-    });
-
-    vi buenos, malos;
-
-    F0R(i, n) {
-        if(words[i][0] == '+') {
-            buenos.PB(i);
-        } else {
-            malos.PB(i);
-        }
-    }
-    // I = MALOS POINTER, J = BUENOS POINTER
-    int j = 0; 
     vector<string> ans;
-    if(buenos.size() == 0) {
-        char last = '-';
-        vector<char> letters;
-        F0R(i, malos.size()) {
-            char primera_letra = words[malos[i]][1];
-            if(primera_letra != last) {
-                last = primera_letra;
-                letters.PB(primera_letra);
-            }
-        }
-        cout << letters.size() << "\n";
-        F0R(i, letters.size()) {
-            cout << letters[i] << "\n";
-        }
-        return true;
-    }
 
-    F0R(i, malos.size()) {
-        int current = malos[i];
-        while(j < buenos.size() && current > buenos[j]) {
-            j++;
-        }        
-        string s = words[current]; 
-        int start_value = 1;
-        if(ans.size() > 0) {
-            string last = ans[ans.size()-1];
-            //cout << "LAST = " << last << endl;
-            for(; start_value < min(last.size(), s.size()); start_value++) {
-                if(s[start_value] != last[start_value]) {
-                    //cout << s[start_value] << " " << last[start_value] << endl;
-                    break;
-                }
-            }
-        }
-        // cout << "START VAL = " << start_value << endl;
-        if(start_value == s.size()) {
+    while (!st.empty()) {
+        int v = st.top().F;
+        string s = st.top().S;
+        st.pop();
+
+        if (!my_trie[v].bad)
+            continue;
+        if (!my_trie[v].good) {
+            ans.PB(s);
             continue;
         }
-        int a = start_value, b = start_value, c = 1e9;
-        // arriba
-        //cout << " MALO = " << s << endl;
-        if(j > 0) {
-            string t = words[buenos[j-1]];
-            //cout << " UP = " << t << endl;
-            for(; a  < min(t.size(), s.size()); a++) {
-                if(s[a] != t[a]) {
-                    break;
-                }
-            }
-            //cout << " A LOGRADO = " << a << endl;
-            if(a == s.size()) {
-                cout << "-1\n"; return true;
-            }
-            c = min(c, a);
+        if (my_trie[v].output) {
+            bad = true;
+            break;
         }
-        // abajo
-        if(j < buenos.size()) {
-            string t = words[buenos[j]];
-            //cout << " DOWN = " << t << endl;
-            for(; b < min(t.size(), s.size()); b++) {
-                if(s[b] != t[b]) {
-                    break;
-                }
-            }
-            //cout << " B LOGRADO " << b << endl;
-            if(b == s.size()) {
-                cout << "-1\n"; return true;
-            }
-            c = min(c, b);
+
+        FOR(i,0,K) {
+            if (my_trie[v].next[i] == -1)
+                continue;
+            char ch = i+'a';
+            st.push(MP(my_trie[v].next[i], s+ch));
         }
-        // cout << start_value << " " << a << " " <<  b << " " << c << endl;
-        if(start_value > 1 && start_value == c) continue;
-        ans.PB(s.substr(0, c+1));
+
     }
 
-    cout << ans.size() << "\n";
-    F0R(i, ans.size()) {
-        cout << ans[i].substr(1, ans[i].size()) << "\n";
+    if (bad)
+        cout << "-1\n";
+    else {
+        cout << ans.size() << '\n';
+        FOR(i,0,ans.size()) {
+            cout << ans[i] << '\n';
+        }
     }
-    return true;
+
 }
+
 int main() {
     fastio;
     solve();

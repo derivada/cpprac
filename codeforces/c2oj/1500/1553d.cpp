@@ -19,7 +19,6 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define S second
 #define PB push_back
 #define MP make_pair
-#define debug(x) cout << #x << " is " << x << endl
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()  // all the structure
 #define F0R(i, n) for (int i = 0; i < n; i++)
@@ -28,10 +27,25 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define ROF(i, a, b) for (int i = b - 1; i >= 0; i--)
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
+string s, t; int n, m;
+vector<vector<bool>> dp;
 
 inline void solve() {
-    int n;
-    cin >> n;
+    string s, t; cin >> s >> t;
+    int n = s.length(), m = t.length();
+    int i = n-1, j = m-1;
+    while(i >= 0 && j >= 0) {
+        if(s[i] == t[j]) {
+            i--, j--;
+        } else {
+            i-=2;
+        }
+    }
+    if(j == 0) {
+        cout << "YES\n";
+    } else {
+        cout << "NO\n";
+    }
 }
 
 int main() {

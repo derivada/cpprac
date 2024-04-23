@@ -30,8 +30,33 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 const ll MOD = 1e9 + 7; // change MOD value
 
 inline void solve() {
-    int n;
-    cin >> n;
+    int n, k;
+    cin >> n >> k;
+    vi a(k), t(k);
+    F0R(i, k) cin >> a[i];
+    F0R(i, k) cin >> t[i];
+    using pii = pair<int, int>;
+    priority_queue<pii, vector<pii>, greater<pii>> left, right;
+
+    F0R(i, k) {
+        right.push(MP(t[i] + a[i], a[i]));
+    }
+
+    for(int i = 1; i<=n; i++) {
+        while(!right.empty() && right.top().S < i) {
+            pi top_right = right.top(); right.pop();
+            left.push(MP(top_right.F - 2*top_right.S, top_right.S));
+        }
+        int M = 2*1e9;
+        if(!right.empty()) {
+            M = min(M, right.top().F - i);
+        }       
+        if(!left.empty()) {
+            M = min(M, left.top().F + i);
+        }
+        cout << M << " ";
+    }
+    cout << "\n";
 }
 
 int main() {

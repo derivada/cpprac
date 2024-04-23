@@ -19,7 +19,6 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define S second
 #define PB push_back
 #define MP make_pair
-#define debug(x) cout << #x << " is " << x << endl
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()  // all the structure
 #define F0R(i, n) for (int i = 0; i < n; i++)
@@ -30,8 +29,31 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 const ll MOD = 1e9 + 7; // change MOD value
 
 inline void solve() {
-    int n;
-    cin >> n;
+    int n; ll k;
+    cin >> n >> k;
+    vector<ll> v(n);
+    F0R(i, n)
+        cin >> v[i];
+
+    int i = 0, j = n-1, ans = 0;
+    while(i < j) {
+        int rd = min(v[i] , v[j]); 
+        // rd = damage to kill 1 of the ships
+        if(k >= 2*rd) {
+            v[i] -= rd; v[j] -= rd; k-= 2*rd;
+            if(!v[i]){ i++, ans++; }
+            if(!v[j]){ j--, ans++; }
+        } else if(k == 2*rd-1) {
+            // can maybe kill left ship
+            v[i] -= rd; v[j] -= rd-1; k-=2*rd-1;
+            if(!v[i]) { i++, ans++; }
+        } else {
+            // cant kill any more ships
+            break;
+        }
+    }
+    if(i == j && k >= v[i]) ans++;
+    cout << ans << "\n";
 }
 
 int main() {

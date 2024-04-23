@@ -19,7 +19,6 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define S second
 #define PB push_back
 #define MP make_pair
-#define debug(x) cout << #x << " is " << x << endl
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()  // all the structure
 #define F0R(i, n) for (int i = 0; i < n; i++)
@@ -29,9 +28,58 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
 
+int n, m;
+vector<vector<bool>> dp;
+inline bool check(vector<vi> &v, int a) {
+    dp.resize(n);
+    F0R(i, n) {
+        dp[i].assign(m, false);
+    }
+    dp[0][0] = true;
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < m; ++j) {
+            if (v[i][j] % a > 0) {
+                continue;
+            }
+            if (!dp[i][j] && i) {
+                dp[i][j] = (dp[i - 1][j] == 1 ? 1 : 0);
+            }
+            if (!dp[i][j] && j) {
+                dp[i][j] = (dp[i][j - 1] == 1 ? 1 : 0);
+            }
+        }
+    }
+    return dp[n-1][m-1];
+}
+
 inline void solve() {
-    int n;
-    cin >> n;
+    cin >> n >> m;
+    vector<vi> v(n, vi(m));
+    F0R(i, n) {
+        F0R(j, m) {
+            cin >> v[i][j];
+        }
+    }
+    int g = gcd(v[0][0], v[n-1][m-1]);
+    int ans = -1;
+    vi to_check;
+    for (int i = 1; i * i <= g; i++) {
+        if(g % i == 0) {
+            int a = g/i;
+            if(check(v, a)) { 
+                cout << a << "\n";
+                return;
+            }
+            to_check.PB(i);
+        }
+    }
+    reverse(all(to_check));
+    for(int i: to_check) {
+        if(check(v, i)) { 
+            cout << i << "\n";
+            return;
+        }
+    }
 }
 
 int main() {
