@@ -19,7 +19,6 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define S second
 #define PB push_back
 #define MP make_pair
-#define debug(x) cout << #x << " is " << x << endl
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()  // all the structure
 #define F0R(i, n) for (int i = 0; i < n; i++)
@@ -32,6 +31,33 @@ const ll MOD = 1e9 + 7; // change MOD value
 inline void solve() {
     int n;
     cin >> n;
+    vector<string> s(n);
+    F0R(i, n)
+        cin >> s[i];
+
+    pi first = MP(-1,-1), last;
+
+    F0R(i, n) {
+        F0R(j, n) {
+            if(s[i][j] == '1') {
+                if(first == MP(-1, -1))
+                    first = MP(i,j);
+                last = MP(i,j);
+            }
+        }
+    }
+    int x = first.F, y = first.S;
+    int x2 = last.F, y2 = last.S;
+    if(s[min(n-1, x+1)][min(n-1, y+1)] == '1' &&
+        s[max(0, x2-1)][max(0, y2-1)] == '1' &&
+        s[min(n-1, x)][min(n-1, y+1)] == '1' &&
+        s[max(0, x2)][max(0, y2-1)] == '1' &&
+        s[min(n-1, x+1)][min(n-1, y)] == '1' &&
+        s[max(0, x2-1)][max(0, y2)] == '1') {
+            cout << "SQUARE\n";
+    } else{
+        cout << "TRIANGLE\n";
+    }
 }
 
 int main() {

@@ -19,7 +19,6 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define S second
 #define PB push_back
 #define MP make_pair
-#define debug(x) cout << #x << " is " << x << endl
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()  // all the structure
 #define F0R(i, n) for (int i = 0; i < n; i++)
@@ -27,11 +26,36 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define FOR(i, a, b) for (int i = a; i < b; i++)
 #define ROF(i, a, b) for (int i = b - 1; i >= 0; i--)
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
-const ll MOD = 1e9 + 7; // change MOD value
+
 
 inline void solve() {
-    int n;
-    cin >> n;
+    int n, M;
+    cin >> n >> M;
+    vi v(n, 0);
+    F0R(i, n){ 
+        cin >> v[i];
+    }
+    string s;
+    cin >> s;
+    vi del(n);
+    int l = 0, r = n-1;
+    for(int i = 0; i<n; i++){
+        if(s[i] == 'L') {
+            del[i] = v[l];
+            l++;
+        } else {
+            del[i] = v[r];
+            r--;
+        }
+    }
+    vi ans(n+1);
+    ans[n] = 1;
+    for(int i = n-1; i >= 0; i--) {
+        ans[i] = (ans[i+1] * del[i]) % M;
+    }
+    F0R(i, n)
+        cout << ans[i] << " " ;
+    cout << "\n";
 }
 
 int main() {

@@ -19,7 +19,6 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define S second
 #define PB push_back
 #define MP make_pair
-#define debug(x) cout << #x << " is " << x << endl
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()  // all the structure
 #define F0R(i, n) for (int i = 0; i < n; i++)
@@ -30,15 +29,29 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 const ll MOD = 1e9 + 7; // change MOD value
 
 inline void solve() {
-    int n;
-    cin >> n;
+    int n, x;
+    cin >> n >> x;
+    vi c(n,0);
+    F0R(i, n)
+        cin >> c[i];
+    vi dp(x+1, 1e9);
+    dp[0] = 0;
+
+    for(int sum = 1; sum <= x; sum++) {
+        for(int j = 0; j<n; j++) {
+            if(sum - c[j] >= 0)
+                dp[sum] = min(dp[sum], dp[sum - c[j]] + 1);
+        }
+    }
+
+    if(dp[x] == 1e9) {
+        cout << "-1\n";
+    } else {
+        cout << dp[x] << "\n";
+    }
 }
 
 int main() {
     fastio;
-    // freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
-    int tc;
-    cin >> tc;
-    while (tc--) 
-        solve();
+    solve();
 }

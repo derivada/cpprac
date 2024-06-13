@@ -19,7 +19,6 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define S second
 #define PB push_back
 #define MP make_pair
-#define debug(x) cout << #x << " is " << x << endl
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()  // all the structure
 #define F0R(i, n) for (int i = 0; i < n; i++)
@@ -30,15 +29,47 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 const ll MOD = 1e9 + 7; // change MOD value
 
 inline void solve() {
-    int n;
-    cin >> n;
+    int n, m;
+    cin >> n >> m;
+    vector<vector<int>> g(n+1);
+    F0R(i, m) {
+        int a, b;
+        cin >> a >> b;
+        g[a].PB(b);
+        g[b].PB(a);
+    }
+    // BFS with 2-coloring for finding if graph is bipartite and a possible matching
+    vi color(n+1, -1);
+    queue<int> q;
+    bool is_bipartite = true;
+    for (int st = 1; st <= n; ++st) {
+        if (color[st] == -1) {
+            q.push(st);
+            color[st] = 0;
+            while (!q.empty()) {
+                int v = q.front();
+                q.pop();
+                for (int u : g[v]) {
+                    if (color[u] == -1) {
+                        color[u] = color[v] ^ 1;
+                        q.push(u);
+                    } else {
+                        is_bipartite &= color[u] != color[v];
+                    }
+                }
+            }
+        }
+    }
+    if(is_bipartite)
+        for(int i = 1; i<=n; i++)
+            cout << color[i]+1 << " ";
+    else
+        cout << "IMPOSSIBLE";
+    
+    cout << "\n";
 }
-
 int main() {
     fastio;
     // freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
-    int tc;
-    cin >> tc;
-    while (tc--) 
-        solve();
+    solve();
 }

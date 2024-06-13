@@ -19,7 +19,6 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define S second
 #define PB push_back
 #define MP make_pair
-#define debug(x) cout << #x << " is " << x << endl
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()  // all the structure
 #define F0R(i, n) for (int i = 0; i < n; i++)
@@ -29,9 +28,60 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
 
+inline int findComponentValue(int index, const vector<pi>& ranges) {
+    int a = 0, b = ranges.size()-1;
+    while(a <= b) {
+        int m = (a+b) / 2;
+        //cout << " a = " <<  a << " b = " << b << " m = " << m << " range[m]: " << ranges[m].F << ", " << ranges[m].S << " looking for " << index << endl;
+        if(index < ranges[m].F) {
+            b = m - 1;
+        } else if(index > ranges[m].S){
+            a = m + 1;
+        } else {
+            return m;
+        }
+    }
+    assert(0 == 1);
+    return -1;
+} 
+
 inline void solve() {
     int n;
     cin >> n;
+    vi v(n,0);
+    vector<pi> ranges;
+    int m = 0;
+    int last = -1;
+    // compress the array
+    F0R(i, n) {
+        cin >> v[i];
+        if(v[i] != last) {
+            ranges.push_back(MP(i, i));
+            m++;
+        } else {
+            ranges[m-1] = MP(ranges[m-1].F, i);
+        }
+        last = v[i];
+    }
+    ranges[m-1] = MP(ranges[m-1].F, n-1);
+
+    int q;
+    cin >> q;
+    F0R(i, q) {
+        int l, r;
+        cin >> l >> r;
+        l--, r--;
+        // bin search
+        int lp, rp;
+        lp = findComponentValue(l, ranges);
+        rp = findComponentValue(r, ranges);
+        if(lp != rp) {
+            cout << (ranges[lp].S+1) << " " << (ranges[lp+1].F+1) << "\n";
+        } else {
+            cout << "-1 -1\n";
+        }
+    }
+    cout << "\n";
 }
 
 int main() {

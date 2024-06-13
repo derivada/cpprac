@@ -19,7 +19,6 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define S second
 #define PB push_back
 #define MP make_pair
-#define debug(x) cout << #x << " is " << x << endl
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()  // all the structure
 #define F0R(i, n) for (int i = 0; i < n; i++)
@@ -29,9 +28,53 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
 
+int n;
+vector<char> color;
+vi parent;
+int cycle_start, cycle_end;
+vector<vector<int>> adj;
+bool dfs(int v) {
+    color[v] = 1;
+    for(int u : adj[v]) {
+        if(color[u] == 0) {
+            parent[u] = v;
+            if(dfs(u))
+                return true;
+        } else if(color[u] == 1) {
+            cycle_end = v;
+            cycle_start = u;
+            return true;
+        }
+    }
+    color[v] = 2;
+    return false;
+}
+
 inline void solve() {
-    int n;
-    cin >> n;
+    int n, k;
+    cin >> n >> k;
+    adj.clear(); adj.resize(n+1);
+    color.assign(n+1, 0); parent.assign(n+1, -1);
+    F0R(i, k) {
+        vi row(n);
+        F0R(j, n)
+            cin >> row[j];
+        for(int j = 1; j < n-1; j++) {
+            adj[row[j]].PB(row[j+1]);
+        }
+    }
+    
+    // now we find the cycle in the directed graph
+    cycle_start = -1;
+    for(int v = 1; v<=n; v++) {
+        if(color[v] == 0 && dfs(v)) 
+            break;
+    }
+    if(cycle_start == -1) {
+        cout << "YES\n";
+    } else {
+        cout << "NO\n";
+    }
 }
 
 int main() {

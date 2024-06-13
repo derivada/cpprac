@@ -19,7 +19,6 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define S second
 #define PB push_back
 #define MP make_pair
-#define debug(x) cout << #x << " is " << x << endl
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()  // all the structure
 #define F0R(i, n) for (int i = 0; i < n; i++)
@@ -30,15 +29,30 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 const ll MOD = 1e9 + 7; // change MOD value
 
 inline void solve() {
-    int n;
-    cin >> n;
+    string s, t;
+    cin >> s >> t;
+    int n = s.length(), m = t.length();
+
+    vector<vi> dist(n+1, vi(m+1, (int) 1e9 + 5));
+    dist[0][0] = 0;
+    for(int i = 1; i<=n; i++) {
+        dist[i][0] = dist[i-1][0] + 1;
+    }
+    for(int j = 1; j<=m; j++) {
+        dist[0][j] = dist[0][j-1] + 1;
+    }
+    for(int i = 1; i<=n; i++) {
+        for(int j = 1; j<=m; j++) {
+            dist[i][j] = min(dist[i][j-1] + 1, 
+                        min(dist[i-1][j] + 1,
+                            dist[i-1][j-1] + (s[i-1] != t[j-1])));
+        }
+    }
+    cout << dist[n][m] << "\n";
 }
 
 int main() {
     fastio;
     // freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
-    int tc;
-    cin >> tc;
-    while (tc--) 
-        solve();
+    solve();
 }

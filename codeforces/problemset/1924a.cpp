@@ -19,7 +19,6 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define S second
 #define PB push_back
 #define MP make_pair
-#define debug(x) cout << #x << " is " << x << endl
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()  // all the structure
 #define F0R(i, n) for (int i = 0; i < n; i++)
@@ -30,8 +29,34 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 const ll MOD = 1e9 + 7; // change MOD value
 
 inline void solve() {
-    int n;
-    cin >> n;
+
+    // idea: greedily built a counterexample by always choosing the next letter of the subsequence
+    // as the last letter to appear 1 time in the original string. this makes it so there are less
+    // possibilities latter
+    int n, k, m;
+    cin >> n >> k >> m;
+    string s;
+    cin >> s;
+    set<char> letters;
+    string sub = "";
+    F0R(i, m) {
+        letters.insert(s[i]);
+        if(letters.size() == k){
+            sub = sub + s[i];
+            letters.clear();
+        }
+    }
+    if(sub.length() < n) {
+        // find a missing letter
+        char missing = 'a';
+        while(letters.find(missing) != letters.end())
+            missing++;
+        for(int i = sub.length(); i<n; i++)
+            sub = sub + missing;
+        cout << "NO\n" << sub << "\n";
+    } else {
+        cout << "YES\n";
+    }
 }
 
 int main() {

@@ -1,3 +1,11 @@
+
+
+
+
+
+
+
+
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
 #include <ext/pb_ds/tree_policy.hpp>
@@ -19,7 +27,6 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define S second
 #define PB push_back
 #define MP make_pair
-#define debug(x) cout << #x << " is " << x << endl
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()  // all the structure
 #define F0R(i, n) for (int i = 0; i < n; i++)
@@ -30,8 +37,28 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 const ll MOD = 1e9 + 7; // change MOD value
 
 inline void solve() {
-    int n;
-    cin >> n;
+    int n, a, b;
+    cin >> n >> a >> b;
+    multiset<int> m;
+    F0R(i, n*n) {
+        int x; cin >> x; m.insert(x);
+    }
+    int a_1 = *m.begin();
+    m.erase(m.begin());
+    F0R(i, n) {
+        F0R(j, n) {
+            if(i == 0 && j == 0)
+                continue;
+            auto it = m.find(a_1 + i*a + j*b);
+            if(it == m.end()) {
+                cout << "NO\n";
+                return;
+            } else {
+                m.erase(it);
+            }
+        }
+    }
+    cout << "YES\n";
 }
 
 int main() {

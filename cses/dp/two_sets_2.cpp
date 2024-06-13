@@ -19,7 +19,6 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define S second
 #define PB push_back
 #define MP make_pair
-#define debug(x) cout << #x << " is " << x << endl
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()  // all the structure
 #define F0R(i, n) for (int i = 0; i < n; i++)
@@ -28,17 +27,29 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define ROF(i, a, b) for (int i = b - 1; i >= 0; i--)
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
-
+ 
 inline void solve() {
     int n;
     cin >> n;
+    int sum = n*(n+1)/2;
+    if(sum % 2 != 0){
+        cout << "0\n"; return;
+    }
+    vector<vi> dp(n, vi(sum+1, 0)); // dp[i][s] = # of ways to reach sum s using elements 1..i
+    // dp[i][s] = dp[i-1][s] + dp[i][s-i]
+    dp[0][0] = 1;
+    int target = sum/2;
+    for(int i = 1; i<n; i++) {
+        for(int s = 0; s<=sum; s++) {
+            dp[i][s] = dp[i-1][s];
+            if(s-i>=0)
+                dp[i][s] = (dp[i][s] + dp[i-1][s-i]) % MOD;
+        }
+    }
+    cout << dp[n-1][target] << "\n";
 }
-
+ 
 int main() {
     fastio;
-    // freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
-    int tc;
-    cin >> tc;
-    while (tc--) 
-        solve();
+    solve();
 }

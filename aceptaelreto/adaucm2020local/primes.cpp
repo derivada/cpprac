@@ -19,7 +19,6 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define S second
 #define PB push_back
 #define MP make_pair
-#define debug(x) cout << #x << " is " << x << endl
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()  // all the structure
 #define F0R(i, n) for (int i = 0; i < n; i++)
@@ -29,16 +28,29 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
 
-inline void solve() {
-    int n;
-    cin >> n;
-}
-
 int main() {
     fastio;
-    // freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
-    int tc;
-    cin >> tc;
-    while (tc--) 
-        solve();
+    const int N = 9876;
+    vector<int> lp(N+1);
+    vector<int> pr;
+
+    for (int i=2; i <= N; ++i) {
+        if (lp[i] == 0) {
+            lp[i] = i;
+            pr.push_back(i);
+        }
+        for (int j = 0; i * pr[j] <= N; ++j) {
+            lp[i * pr[j]] = pr[j];
+            if (pr[j] == lp[i]) {
+                break;
+            }
+        }
+    }
+    cout << "int primes["<< pr.size() << "] = {";
+    F0R(i, pr.size()){
+        cout << pr[i];
+        if(i < pr.size()-1)
+            cout << ", ";
+    }
+    cout << "};";
 }

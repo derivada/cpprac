@@ -19,7 +19,6 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define S second
 #define PB push_back
 #define MP make_pair
-#define debug(x) cout << #x << " is " << x << endl
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()  // all the structure
 #define F0R(i, n) for (int i = 0; i < n; i++)
@@ -42,3 +41,17 @@ int main() {
     while (tc--) 
         solve();
 }
+
+/*
+inline bool solve() {
+    int n; cin >> n;
+    if(!cin) return false;
+
+
+    return true;
+}
+int main() {
+    fastio;
+    while(solve());
+}
+*/

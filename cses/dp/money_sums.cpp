@@ -19,7 +19,6 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define S second
 #define PB push_back
 #define MP make_pair
-#define debug(x) cout << #x << " is " << x << endl
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()  // all the structure
 #define F0R(i, n) for (int i = 0; i < n; i++)
@@ -30,15 +29,38 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 const ll MOD = 1e9 + 7; // change MOD value
 
 inline void solve() {
-    int n;
+    int n, sum = 0;
     cin >> n;
+    vi coins(n,0);
+    F0R(i, n){
+        cin >> coins[i];
+        sum += coins[i];
+    }
+    vector<bool> dp(sum+1, 0);
+    dp[0] = true;
+
+    for(int c = 0; c < n; c++) {
+        for(int i = sum; i>=0; i--) {
+            if(dp[i]) dp[i+coins[c]] = true;
+        }
+    }
+    int total = 0;
+    string s = "\n";
+    for(int i = 1; i<=sum; i++) {
+        if(dp[i]){
+            total++;
+        }
+    }
+    cout << total << "\n";
+    for(int i = 1; i<=sum; i++) {
+        if(dp[i]){
+            cout << i << " ";
+        }
+    }
+    cout << "\n";
 }
 
 int main() {
     fastio;
-    // freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
-    int tc;
-    cin >> tc;
-    while (tc--) 
-        solve();
+    solve();
 }

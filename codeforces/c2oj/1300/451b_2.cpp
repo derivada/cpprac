@@ -29,16 +29,34 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
 
-inline void solve() {
+void solve() {
     int n;
     cin >> n;
+    vi v(n);
+    F0R(i, n)
+        cin >> v[i];
+
+    int start = 1, end = 1;
+    bool reversed = false;
+    for(int i = 1; i<n; i++) {
+        if(v[i] < v[i-1]) {
+            if(reversed) {
+                cout << "no\n"; return;
+            }
+            reversed = true;
+            start = i;
+            while(i < n && v[i] <= v[i-1]) {
+                i++;
+            }  
+            end = i;
+            reverse(v.begin()+start-1, v.begin()+end);
+            i--; // xd
+        }
+    }
+    cout << "yes\n" << start << " " << end << "\n";
 }
 
 int main() {
     fastio;
-    // freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
-    int tc;
-    cin >> tc;
-    while (tc--) 
-        solve();
+    solve();
 }

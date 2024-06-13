@@ -19,7 +19,6 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define S second
 #define PB push_back
 #define MP make_pair
-#define debug(x) cout << #x << " is " << x << endl
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()  // all the structure
 #define F0R(i, n) for (int i = 0; i < n; i++)
@@ -32,6 +31,44 @@ const ll MOD = 1e9 + 7; // change MOD value
 inline void solve() {
     int n;
     cin >> n;
+    vi v(n,0);
+    F0R(i, n){ 
+        cin >> v[i];
+    }
+    vi right(n,0), left(n,0); // distances from city 0 to i and from city n to i
+    if(n> 2) {
+        right[1] = 1, left[n-2] = 1;
+        for(int i = 2; i<n; i++) {
+            int prev = abs(v[i-1] - v[i-2]), curr = abs(v[i] - v[i-1]);
+            if(curr > prev) right[i] = right[i-1] + curr;
+            else right[i] = right[i-1] + 1;
+        }
+        for(int i = n-3; i>=0; i--) {
+            int prev = abs(v[i+1] - v[i+2]), curr = abs(v[i] - v[i+1]);
+            if(curr > prev) left[i] = left[i+1] + curr;
+            else left[i] = left[i+1] + 1;
+        }
+    } else {
+        right[1] = 1, left[0] = 1;
+    }
+    /*
+        F0R(i, n) cout << left[i] << " ";
+        cout << endl;
+        F0R(i, n) cout << right[i] << " ";
+        cout << endl;
+    */
+    int m;
+    cin >> m;
+    F0R(i, m) {
+        int x, y;
+        cin >> x >> y;
+        x--, y--;
+        if(x < y) {
+            cout << (right[y] - right[x]) << "\n";
+        } else {
+            cout << -(left[x] - left[y]) << "\n";
+        }
+    }
 }
 
 int main() {

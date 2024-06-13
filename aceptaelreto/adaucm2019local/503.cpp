@@ -19,7 +19,6 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define S second
 #define PB push_back
 #define MP make_pair
-#define debug(x) cout << #x << " is " << x << endl
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()  // all the structure
 #define F0R(i, n) for (int i = 0; i < n; i++)
@@ -30,8 +29,28 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 const ll MOD = 1e9 + 7; // change MOD value
 
 inline void solve() {
-    int n;
-    cin >> n;
+    int n , m;
+    cin >> n >> m;
+    vi v(n*m + 5, 0);
+    for(int i = 1; i<=n; i++) {
+        for(int j = 1; j<=m; j++) {
+            v[i+j] += 1;
+        }
+    }
+    int maxv = 0;
+    F0R(i, v.size()) {
+        maxv = max(maxv, v[i]);
+    }
+    vi ans;
+    F0R(i, v.size()) {
+        if(v[i] == maxv)
+            ans.PB(i);
+    }
+    F0R(i, ans.size()) {
+        cout << ans[i];
+        if(i < ans.size()-1) cout << " ";
+    }
+    cout << "\n";
 }
 
 int main() {

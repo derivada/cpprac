@@ -19,7 +19,6 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define S second
 #define PB push_back
 #define MP make_pair
-#define debug(x) cout << #x << " is " << x << endl
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()  // all the structure
 #define F0R(i, n) for (int i = 0; i < n; i++)
@@ -29,9 +28,35 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
 
+bool get_bit(uint64_t n, int bit) {
+    return n & (1ll<<bit);
+}
+
 inline void solve() {
-    int n;
-    cin >> n;
+    int64_t a, b, r, new_a = 0, new_b = 0;
+    cin >> a >> b >> r;
+    bool found_highest = false;
+    uint64_t x = 0;
+    if(a > b)
+        swap(a, b);
+    for(int i = 63; i>=0; i--) {
+        bool bit_a = get_bit(a, i), bit_b = get_bit(b, i);
+        if(bit_a == bit_b) continue;
+        if(!bit_a && bit_b){
+            if(!found_highest){
+                found_highest = true;
+            } else if(x + (1LL<<i) <= r){
+                bit_a = !bit_a;
+                bit_b = !bit_b;
+                x += (1LL<<i);
+            }
+        }
+        if(bit_a)
+            new_a += (1LL<<i);
+        if(bit_b)
+            new_b += (1LL<<i);
+    }
+    cout << abs(new_a-new_b) << "\n";
 }
 
 int main() {

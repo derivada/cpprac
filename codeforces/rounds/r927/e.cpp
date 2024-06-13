@@ -19,7 +19,6 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define S second
 #define PB push_back
 #define MP make_pair
-#define debug(x) cout << #x << " is " << x << endl
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()  // all the structure
 #define F0R(i, n) for (int i = 0; i < n; i++)
@@ -32,6 +31,36 @@ const ll MOD = 1e9 + 7; // change MOD value
 inline void solve() {
     int n;
     cin >> n;
+    string s;
+    cin >> s;
+    vi pre(n);
+    pre[0] = (int) (s[0] - 48);
+    for(int i = 1; i<n; i++) {
+        pre[i] = pre[i-1] + (int) (s[i] - 48);
+    }
+    vector<char> ans(n);
+    int carry = 0;
+    for(int i = n-1; i>=0; i--) {
+        ans[i] = (pre[i]+carry) % 10;
+        carry = (pre[i]+carry) / 10;
+    }
+    bool printed_carry = false;
+    while(carry > 0) {
+        printed_carry = true;
+        int digit = carry % 10;
+        cout << (char) (digit + 48);
+        carry /= 10;
+    }
+    bool seen_diff_0 = false;
+    for(int i = 0; i<n; i++) {
+        if(ans[i] == 0 && !seen_diff_0 && !printed_carry){
+            continue;
+        }
+        if(ans[i] != 0)
+            seen_diff_0 = true;
+        cout << (char) (ans[i] + 48);
+    }
+    cout << "\n";
 }
 
 int main() {

@@ -19,7 +19,6 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define S second
 #define PB push_back
 #define MP make_pair
-#define debug(x) cout << #x << " is " << x << endl
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()  // all the structure
 #define F0R(i, n) for (int i = 0; i < n; i++)
@@ -30,15 +29,30 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 const ll MOD = 1e9 + 7; // change MOD value
 
 inline void solve() {
-    int n;
-    cin >> n;
+    ll n, m, k; cin >> n >> m >> k;
+    vector<ll> a(n); F0R(i,n) cin >> a[i];
+    sort(all(a));
+    multiset<ll> b;
+    F0R(i, m) {
+        ll x;
+        cin >> x;
+        b.insert(x);
+    }
+    int ans = 0;
+    for(int i = 0; i<n; i++) {
+        if(b.size() == 0)
+            break;
+        ll search = max(0LL, a[i]-k); // it can be up to 2k higher than this to count
+        auto it = b.lower_bound(search); 
+        if(it != b.end() && *it - search <= 2*k) {
+            b.erase(it);
+            ans++;
+        }
+    }
+    cout << ans << endl;
 }
 
 int main() {
     fastio;
-    // freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
-    int tc;
-    cin >> tc;
-    while (tc--) 
-        solve();
+    solve();
 }

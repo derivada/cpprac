@@ -19,7 +19,6 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define S second
 #define PB push_back
 #define MP make_pair
-#define debug(x) cout << #x << " is " << x << endl
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()  // all the structure
 #define F0R(i, n) for (int i = 0; i < n; i++)
@@ -30,15 +29,57 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 const ll MOD = 1e9 + 7; // change MOD value
 
 inline void solve() {
-    int n;
-    cin >> n;
+    int n, m;
+    cin >> n >> m;
+    vector<vector<int>> g(n+1);
+    F0R(i, m) {
+        int a, b;
+        cin >> a >> b;
+        g[a].PB(b);
+        g[b].PB(a);
+    }
+    // Dijkstra with pred array
+    vi pred(n+1);
+    vi d(n+1, 1e9);
+    priority_queue<pi, vector<pi>, greater<pi>> q; // dist,s
+    d[1] = 0;
+    pred[1] = -1;
+    q.push({0, 1});
+    while(!q.empty()) {
+        int v = q.top().second;
+        int d_v = q.top().first;
+        q.pop();
+        if (d_v != d[v])
+            continue;
+        if(v == n) {
+            int a = n;
+            vi path;
+            while(pred[a] != -1) {
+                path.PB(a);
+                a = pred[a];
+            }
+            path.PB(1);
+            reverse(all(path));
+            cout << path.size() << "\n";
+            for(auto x: path) {
+                cout << x << " ";
+            }
+            cout << "\n";
+            return;
+        }
+        
+        for (auto to : g[v]) {
+            if (d[v] + 1 < d[to]) {
+                d[to] = d[v] + 1;
+                pred[to] = v;
+                q.push({d[to], to});
+            }
+        }
+    }
+    cout << "IMPOSSIBLE\n";
 }
-
 int main() {
     fastio;
     // freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
-    int tc;
-    cin >> tc;
-    while (tc--) 
-        solve();
+    solve();
 }

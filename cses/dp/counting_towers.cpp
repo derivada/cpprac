@@ -19,7 +19,6 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define S second
 #define PB push_back
 #define MP make_pair
-#define debug(x) cout << #x << " is " << x << endl
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()  // all the structure
 #define F0R(i, n) for (int i = 0; i < n; i++)
@@ -29,12 +28,23 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
 
+vector<vector<ll>> dp(1e6+1, vector<ll>(2, 0));
+int last = 1;
+
 inline void solve() {
     int n;
     cin >> n;
+    // find best entry in dp using binary search
+    for(int i = last; i<n; i++) {
+        dp[i][0] = ((dp[i-1][0] * 4) + dp[i-1][1]) % MOD;
+        dp[i][1] = ((dp[i-1][1] * 2) + dp[i-1][0]) % MOD;
+    }
+    last = max(last, n);
+    cout << (dp[n-1][0] + dp[n-1][1]) % MOD << "\n";
 }
 
 int main() {
+    dp[0][0] = dp[0][1] = 1;
     fastio;
     // freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
     int tc;

@@ -19,7 +19,6 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define S second
 #define PB push_back
 #define MP make_pair
-#define debug(x) cout << #x << " is " << x << endl
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()  // all the structure
 #define F0R(i, n) for (int i = 0; i < n; i++)
@@ -30,15 +29,51 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 const ll MOD = 1e9 + 7; // change MOD value
 
 inline void solve() {
-    int n;
-    cin >> n;
+    int n, s, p;
+    cin >> n >> s >> p;
+
+    vector<bool> repe(n);
+    vi precio(n);
+    int suma = 0;
+    int ans = s*p;
+
+    FOR(i,0,n) {
+        cin >> precio[i];
+        suma += precio[i];
+    }
+
+    FOR(i,0,s) {
+        ans = min(ans, suma+(i*p));
+        FOR(j,0,5) {
+            int curr;
+            cin >> curr;
+            curr--;
+            if (!repe[curr]) {
+                repe[curr] = true;
+                suma -= precio[curr];
+            }
+        }
+    }
+
+    cout << ans << '\n';
 }
 
 int main() {
     fastio;
     // freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
-    int tc;
-    cin >> tc;
-    while (tc--) 
-        solve();
+    solve();
 }
+
+/*
+inline bool solve() {
+    int n; cin >> n;
+    if(!cin) return false;
+
+
+    return true;
+}
+int main() {
+    fastio;
+    while(solve());
+}
+*/

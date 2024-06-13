@@ -19,7 +19,6 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define S second
 #define PB push_back
 #define MP make_pair
-#define debug(x) cout << #x << " is " << x << endl
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()  // all the structure
 #define F0R(i, n) for (int i = 0; i < n; i++)
@@ -29,16 +28,42 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
 
-inline void solve() {
-    int n;
-    cin >> n;
+int INF = 1e9 + 5;
+vector<vi> dp;
+string t;
+
+inline void trim(int i, int j) {
+    if(j-i <= 1) { // caso i = j y i+1 = j, tener en cuenta que t[i] != t[i+1] por construcción
+        dp[i][j] = j - i + 1;
+        return;
+    }
+    if(t[i] == t[j]) { // letras coinciden
+        if(dp[i+1][j-1] == INF) trim(i+1, j-1);
+        dp[i][j] = dp[i+1][j-1] + 1;
+    } else { // letras no coinciden
+        if(dp[i+1][j] == INF) trim(i+1, j);
+        if(dp[i][j-1] == INF) trim(i, j-1);
+        dp[i][j] = min(dp[i+1][j] + 1, dp[i][j-1] + 1);
+    }
+}
+
+inline bool solve() {
+    string s; cin >> s;
+    if(!cin) return false;
+    dp.clear();
+    t.clear();
+    t = s[0];
+    FOR(i, 1, s.length()) {
+        if(s[i] != s[i-1]) t+=s[i];
+    }
+    int n = t.length();
+    dp.assign(n, vi(n, INF));
+    trim(0, n-1);
+    cout << dp[0][n-1] << endl;
+    return true;
 }
 
 int main() {
     fastio;
-    // freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
-    int tc;
-    cin >> tc;
-    while (tc--) 
-        solve();
+    while(solve());
 }

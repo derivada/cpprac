@@ -19,7 +19,6 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define S second
 #define PB push_back
 #define MP make_pair
-#define debug(x) cout << #x << " is " << x << endl
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()  // all the structure
 #define F0R(i, n) for (int i = 0; i < n; i++)
@@ -29,9 +28,37 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
 
+
 inline void solve() {
-    int n;
-    cin >> n;
+    int n, m, k;
+    cin >> n >> m >> k;
+    vi v(k+1, 0); // 0 if neither, 1 if a, 2 if b, 3 if both
+    F0R(i, n) {
+        int x;
+        cin >> x;
+        if(x<=k)
+            v[x] = 1;
+    }
+    F0R(i, m) {
+        int x;
+        cin >> x;
+        if(x <= k && v[x] < 2)
+            v[x] += 2;
+    }
+    int only_a = 0, only_b = 0;
+    for(int i = 1; i<=k; i++) {
+        if(v[i] == 0){
+            cout << "NO\n"; return;
+        } else if(v[i] == 1) {
+            only_a++;
+        } else if(v[i] == 2) {
+            only_b++;
+        }
+        if(only_a > k/2 || only_b > k/2){
+            cout << "NO\n"; return;
+        }
+    }
+    cout << "YES\n";
 }
 
 int main() {

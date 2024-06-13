@@ -19,7 +19,6 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define S second
 #define PB push_back
 #define MP make_pair
-#define debug(x) cout << #x << " is " << x << endl
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()  // all the structure
 #define F0R(i, n) for (int i = 0; i < n; i++)
@@ -29,16 +28,31 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
 
+
 inline void solve() {
-    int n;
-    cin >> n;
+    int n, x;
+    cin >> n >> x;
+
+    vi w(n), p(n); //price w, number of pages p
+    F0R(i, n) cin >> p[i];
+    F0R(i, n) cin >> w[i];
+    
+    vi dp(x+1, 0);
+    for(int i = 0; i<n; i++) {
+        for(int weight = x; weight >= 0; weight--) {
+            if(weight - p[i] >= 0) {
+                dp[weight] = max(dp[weight], dp[weight-p[i]] + w[i]);
+            }
+        }
+    }
+    int ans = 0;
+    for(int weight = 1; weight <= x; weight++) {
+        ans = max(ans, dp[weight]);
+    }
+    cout << ans << "\n";
 }
 
 int main() {
-    fastio;
-    // freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
-    int tc;
-    cin >> tc;
-    while (tc--) 
-        solve();
+    fastio; 
+    solve();
 }

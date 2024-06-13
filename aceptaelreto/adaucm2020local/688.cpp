@@ -19,7 +19,6 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define S second
 #define PB push_back
 #define MP make_pair
-#define debug(x) cout << #x << " is " << x << endl
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()  // all the structure
 #define F0R(i, n) for (int i = 0; i < n; i++)
@@ -29,16 +28,49 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
 
-inline void solve() {
-    int n;
-    cin >> n;
+inline bool solve() {
+    int c, m, n;
+    cin >> c;
+    if(!cin) return false;
+    cin >> m >> n;
+    int last = -1;
+    vi v;
+    if(n==2){
+        int a, b, d;
+        cin >> a >> b >> d;
+        if(abs(b-a - (d-b)) > c) {
+            cout << "Tropiezo\n";
+        }
+        else
+            cout << "Ok\n";
+        return true;
+    }
+    F0R(i, n+1) {
+        int x; cin >> x;
+        if(last == -1){
+            last = x;
+            continue;
+        }
+        v.PB(x - last);
+        last = x;
+    }
+    FOR(i, 1, n) {
+        int diff = v[i] - v[i-1];
+        if(abs(diff) > c) {
+            cout << "Tropiezo\n";
+            return true;
+        }
+    }
+    sort(all(v));
+    if (v[v.size()-1] - v[0] > m) {
+        cout << "Tropiezo\n";
+    } else {
+        cout << "Ok\n";
+    }
+    return true;
 }
 
 int main() {
     fastio;
-    // freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
-    int tc;
-    cin >> tc;
-    while (tc--) 
-        solve();
+    while(solve());
 }

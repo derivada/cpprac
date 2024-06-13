@@ -19,7 +19,6 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define S second
 #define PB push_back
 #define MP make_pair
-#define debug(x) cout << #x << " is " << x << endl
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()  // all the structure
 #define F0R(i, n) for (int i = 0; i < n; i++)
@@ -30,15 +29,42 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 const ll MOD = 1e9 + 7; // change MOD value
 
 inline void solve() {
-    int n;
-    cin >> n;
+    int n, m;
+    cin >> n >> m;
+    vector<vector<int>> g(n+1);
+    F0R(i, m) {
+        int a, b;
+        cin >> a >> b;
+        g[a].PB(b);
+        g[b].PB(a);
+    }
+    vi representatives;
+    // find all connected components and representatives for each
+    vector<bool> seen(n+1, false);
+    for(int i = 1; i<=n; i++) {
+        if(!seen[i]) {
+            representatives.PB(i);
+            // DFS
+            stack<int> st;
+            st.push(i);
+            while(!st.empty()) {
+                int elem = st.top(); st.pop();
+                for(auto n: g[elem]) {
+                    if(!seen[elem])
+                        st.push(n);
+                }
+                seen[elem] = true;
+            }
+        }
+    }
+    cout << representatives.size()-1 << "\n";
+    for(int i = 1; i<representatives.size(); i++){
+        cout << representatives[i-1] << " " << representatives[i] << "\n";
+    }
 }
 
 int main() {
     fastio;
     // freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
-    int tc;
-    cin >> tc;
-    while (tc--) 
-        solve();
+    solve();
 }

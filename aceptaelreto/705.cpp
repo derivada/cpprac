@@ -19,7 +19,6 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define S second
 #define PB push_back
 #define MP make_pair
-#define debug(x) cout << #x << " is " << x << endl
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()  // all the structure
 #define F0R(i, n) for (int i = 0; i < n; i++)
@@ -29,9 +28,41 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
 
+inline bool can_jump(vi &v, int m) {
+    int n = v.size(), curr = m;
+    if (curr < v[0])
+        return false;
+    if (curr == v[0])
+        curr--;
+    F0R(i, n-1) {
+        if(v[i+1] - v[i] > curr) {
+            return 0;
+        } else if(v[i+1] - v[i] == curr) {
+            curr --;
+            curr --;
+        }
+    }
+    return 1;
+}
+
 inline void solve() {
     int n;
     cin >> n;
+    vi v(n);
+    F0R(i, n) {
+        cin >> v[i];
+    }
+    int l = 0, r = v[n-1];
+    while (r - l > 1) {
+        int m = (l + r) / 2;
+        if (can_jump(v, m)) {
+            r = m; // a[l] <= k < a[m] <= a[r]
+        } else {
+            l = m; // a[l] <= a[m] <= k < a[r]
+        }
+        m = (l + r) / 2;
+    }
+    cout << r << "\n";
 }
 
 int main() {

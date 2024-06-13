@@ -19,7 +19,6 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define S second
 #define PB push_back
 #define MP make_pair
-#define debug(x) cout << #x << " is " << x << endl
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()  // all the structure
 #define F0R(i, n) for (int i = 0; i < n; i++)
@@ -30,8 +29,42 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 const ll MOD = 1e9 + 7; // change MOD value
 
 inline void solve() {
-    int n;
-    cin >> n;
+    int n, k;
+    cin >> n >> k;
+    vi a(n), x(n);
+    F0R(i, n) {
+        cin >> a[i];
+    }
+    F0R(i, n){
+        cin >> x[i];
+    }
+    map<long long, long long> m;
+    F0R(i, n) {
+        m[abs(x[i])] += a[i];
+    }
+    long long turn = 0, extra_bullets = 0;
+    for(auto x: m) {
+        long long pos = x.first, health = x.second;
+        //cout << "pos, health, extra" << pos << " " << health << " " << extra_bullets << "\n";
+        if(health < extra_bullets) {
+            extra_bullets -= health;
+            continue;
+        }
+        health -= extra_bullets;
+        if(health%k == 0) {
+            turn += health/k;
+            extra_bullets = 0;
+        } else {
+            turn += health/k + 1;
+            extra_bullets = k - health%k;
+        }
+        //cout << "new turn " << turn << "\n";
+        if(pos < turn) {
+            cout << "NO\n";
+            return;
+        }
+    }
+    cout << "YES\n";
 }
 
 int main() {
