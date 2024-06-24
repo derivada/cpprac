@@ -29,38 +29,37 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
 
-void solve() {
-    int n;
-    cin >> n;
-    vi v(n);
-    F0R(i, n)
-        cin >> v[i];
-
-    int start = 0, end = 1;
-    bool reversed = false, equality = false;
-    for(int i = 1; i<n; i++) {
-        if(v[i-1] == v[i] && !reversed) {
-            start = i-1; equality = true;
-        }
-        if(v[i] < v[i-1]) {
-            if(reversed) {
-                cout << "no\n"; return;
+inline void solve() {
+    int n, m;
+    cin >> n >> m;
+    int bi_min = 1000, bi_max = -1, bj_min = 1000, bj_max = -1;
+    int wi_min = 1000, wi_max = -1, wj_min = 1000, wj_max = -1;
+    F0R(i, n) {
+        string s; cin >> s;
+        F0R(j, m) {
+            if(s[j] == 'B') {
+                bi_min = min(i, bi_min), bi_max = max(i, bi_max);
+                bj_min = min(j, bj_min), bj_max = max(j, bj_max);
+            } else {
+                wi_min = min(i, wi_min), wi_max = max(i, wi_max);
+                wj_min = min(j, wj_min), wj_max = max(j, wj_max);
             }
-            reversed = true;
-            if(!equality)
-                start = i-1;
-            while(i < n && v[i] <= v[i-1]) {
-                i++;
-            }  
-            end = i;
-            reverse(v.begin()+start, v.begin()+end);
-            i--; // xd
         }
     }
-    cout << "yes\n" << start+1 << " " << end << "\n";
+    if(bi_min == 0 && bi_max == n-1 && bj_min == 0 && bj_max == m-1) {
+        cout << "YES\n";
+    } else if(wi_min == 0 && wi_max == n-1 && wj_min == 0 && wj_max == m-1) {
+        cout << "YES\n";
+    } else {
+        cout << "NO\n";
+    }
 }
 
 int main() {
     fastio;
-    solve();
+    // freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
+    int tc;
+    cin >> tc;
+    while (tc--) 
+        solve();
 }

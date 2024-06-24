@@ -28,39 +28,38 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define ROF(i, a, b) for (int i = b - 1; i >= 0; i--)
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
+int n, k;
+vi v;
+ll sum = 0;
+vector<vector<ll>> dp;
+ll ans;
 
-void solve() {
-    int n;
-    cin >> n;
-    vi v(n);
-    F0R(i, n)
+inline ll r(int from, int to, int k) {
+
+}
+inline void solve() {
+    cin >> n >> k; // k <= 10
+    v.resize(n);
+    dp.assign(n, vector<ll>(n, -1));
+    F0R(i, n){
         cin >> v[i];
-
-    int start = 0, end = 1;
-    bool reversed = false, equality = false;
-    for(int i = 1; i<n; i++) {
-        if(v[i-1] == v[i] && !reversed) {
-            start = i-1; equality = true;
-        }
-        if(v[i] < v[i-1]) {
-            if(reversed) {
-                cout << "no\n"; return;
-            }
-            reversed = true;
-            if(!equality)
-                start = i-1;
-            while(i < n && v[i] <= v[i-1]) {
-                i++;
-            }  
-            end = i;
-            reverse(v.begin()+start, v.begin()+end);
-            i--; // xd
-        }
+        sum += v[i];
     }
-    cout << "yes\n" << start+1 << " " << end << "\n";
+    ans = sum;
+    F0R(i, n) {
+        if(i > 0)
+            ans = min(ans, r(i, i-1, k-1));
+        if(i < n-1)
+            ans = min(ans, r(i, i+1, k-1));
+    }
+    cout << ans << "\n";
 }
 
 int main() {
     fastio;
-    solve();
+    // freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
+    int tc;
+    cin >> tc;
+    while (tc--) 
+        solve();
 }
