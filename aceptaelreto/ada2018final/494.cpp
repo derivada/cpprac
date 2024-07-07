@@ -30,10 +30,28 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 const ll MOD = 1e9 + 7; // change MOD value
 
 inline bool solve() {
-    int a, n; cin >> a;
-    if(!a) return false;
+    int n;
     cin >> n;
-    ll ans = 0;
+    if(!n) return false;
+    vi v(n), diff(n-1);
+    F0R(i, n)
+        cin >> v[i];
+    F0R(i, n-1)
+        diff[i] = v[i+1]-v[i];
+
+    for(int d = 1; d<=n-1; d++) {
+        bool flag = true;
+        for(int i = d; i < n-1; i++) {
+            if(diff[i] != diff[i-d]) {
+                flag = false;
+                break;
+            }   
+        }
+        if(flag) {
+            cout << v[n-1] + diff[(n-1) % d] << "\n";
+            return true;
+        }
+    }
     return true;
 }
 

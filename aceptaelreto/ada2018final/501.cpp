@@ -30,10 +30,26 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 const ll MOD = 1e9 + 7; // change MOD value
 
 inline bool solve() {
-    int a, n; cin >> a;
-    if(!a) return false;
-    cin >> n;
-    ll ans = 0;
+    int td, ta, dd, da, n;
+    cin >> td;
+    if(!cin) return false;
+    cin >> ta >> dd >> da >> n;
+    for(int i = 0; i<n; i++) {
+        int d = min(td, dd), a = min(ta, da);
+        vi vd(d), va(a);
+        F0R(i, d)
+            cin >> vd[i];
+        F0R(i, a)
+            cin >> va[i];
+        sort(all(vd)), sort(all(va));
+        reverse(all(vd)), reverse(all(va));
+        F0R(i, min(a, d))
+            if(vd[i] < va[i])
+                td--;
+            else
+                ta--;
+    }
+    cout << td << " " << ta << "\n";
     return true;
 }
 

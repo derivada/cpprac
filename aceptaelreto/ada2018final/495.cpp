@@ -30,10 +30,28 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 const ll MOD = 1e9 + 7; // change MOD value
 
 inline bool solve() {
-    int a, n; cin >> a;
-    if(!a) return false;
+    int n, m;
     cin >> n;
-    ll ans = 0;
+    if(!cin) return false;
+    vi v(n+1), cost(n+1);
+    v[0] = 0, cost[0] = 0;
+    F0R(i, n)
+        cin >> v[i+1];
+    F0R(i, n)
+        cin >> cost[i+1];
+    cin >> m;
+    
+    // dp[i] := minimum cost to reach camp i (camp 0 is base)
+    vi dp(n+1, 1e9 + 5);
+    dp[0] = 0;
+    for(int i = 1; i<=n; i++) {
+        for(int j = i-1; j >= 0; j--) {
+            if(v[i] - v[j] > m)
+                break;
+            dp[i] = min(dp[i], dp[j] + cost[i]);
+        }
+    }
+    cout << dp[n] << "\n";
     return true;
 }
 

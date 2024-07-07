@@ -29,11 +29,69 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
 
+int m;
+inline vi sum(vi s, vi t) {
+    vi res(m+1);
+    int carry = 0;
+    F0R(i, m+1) {
+        res[i] = (carry + s[i] + t[i]) % 10;
+        carry = (s[i] + t[i]) >= 10; 
+    }
+    reverse(all(res));
+    return res;
+}
+
+inline vi sub(vi s, vi t) {
+    vi res(m+1);
+    int carry = 0;
+    F0R(i, m+1) {
+        int d = s[i] - carry;
+        if(d >= t[i]) {
+            res[i] = d - t[i];
+            carry = 0;
+        } else {
+            d += 10;
+            res[i] = d - t[i];
+            carry = 1;
+        }
+    }
+    reverse(all(res));
+    return res;
+}
+
+inline vi inv(int d) {
+    vi res(m+1);
+    int D = 1;
+    F0R(i, m+1) {
+        D *= 10;
+        res[i] = D / d;
+        D %= d;
+    }
+    return res;
+}
+
 inline bool solve() {
-    int a, n; cin >> a;
-    if(!a) return false;
+    int n;
     cin >> n;
-    ll ans = 0;
+    if(!n) return false;
+    cin >> m;
+    
+    vi ans(m+1, 0); // order is from LST to MST
+    int sgn = 0;
+    F0R(i, n) {
+        if(sgn)
+            ans = sum(ans, inv(1 + 2*i));
+        else
+            ans = sub(ans, inv(1 + 2*i));
+        sgn ^= 1;
+    }
+    if(n == 1 || m == 0)
+        cout << "1.";
+    else
+        cout << "0.";
+    F0R(i, m)
+        cout << ans[i];
+    cout << "\n";
     return true;
 }
 

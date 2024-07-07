@@ -28,12 +28,36 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define ROF(i, a, b) for (int i = b - 1; i >= 0; i--)
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
+const int INF = 1e9 + 5;
 
 inline bool solve() {
-    int a, n; cin >> a;
-    if(!a) return false;
-    cin >> n;
-    ll ans = 0;
+    int n, q; cin >> n >> q;
+    if(!n && !q) return false;
+    int ans = 0;
+    unordered_set<int> s;
+    for(int i = 0; i <= n; i++) {
+        vi cifras;
+        int tmp = i;
+        while(tmp > 0) {
+            cifras.PB(tmp % 10);
+            tmp /= 10;
+        }
+        reverse(all(cifras));
+        while(cifras.size() < 4)
+            cifras.PB(0);
+        int mult = 1, j = 0;
+        for(int d = 0; d<cifras.size();d++) {
+            j += cifras[d] * mult;
+            mult*=10;
+        }
+        if(i+j<=n && i+j >= q && !s.count(i) && !s.count(j)) {
+            ans++;
+            if(i != j)
+                ans++;
+            s.insert(i), s.insert(j);
+        }
+    }
+    cout << ans << "\n";
     return true;
 }
 

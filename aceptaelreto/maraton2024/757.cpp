@@ -30,14 +30,21 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 const ll MOD = 1e9 + 7; // change MOD value
 
 inline bool solve() {
-    int a, n; cin >> a;
-    if(!a) return false;
-    cin >> n;
-    ll ans = 0;
+    string s; cin >> s; int n = s.length(), ans = 0, curr = 0;
+    F0R(i, n) {
+        if(s[i] == 'T') {
+            curr++;
+            ans = max(curr, ans);
+        } else {
+            curr = 0;
+        }
+    }
+    cout << ans << "\n";
     return true;
 }
 
 int main() {
     fastio;
-    while (solve());
+    int tc; cin >> tc;
+    while(tc--) solve();
 }

@@ -29,15 +29,29 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
 
+ll gcd (ll a, ll b) { // No recursiva
+    while (b) {
+        a %= b;
+        swap(a, b);
+    }
+    return a;
+}
+
+ll lcm (ll a, ll b) {
+    return a / gcd(a, b) * b;
+}
+
 inline bool solve() {
-    int a, n; cin >> a;
-    if(!a) return false;
-    cin >> n;
-    ll ans = 0;
+    ll m, d, n;
+    cin >> m >> d >> n;
+    if(!m && !d && !n)
+        return false;
+    ll l = lcm(m, d);
+    cout << n/l << "\n";
     return true;
 }
 
 int main() {
     fastio;
-    while (solve());
+    while(solve());
 }
