@@ -19,7 +19,6 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define S second
 #define PB push_back
 #define MP make_pair
-#define debug(x) cout << #x << " is " << x << endl
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()  // all the structure
 #define F0R(i, n) for (int i = 0; i < n; i++)
@@ -30,41 +29,7 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 const ll MOD = 1e9 + 7; // change MOD value
 
 inline void solve() {
-    int n, q;
-    cin >> n >> q;
-    using ull = unsigned long long;
-    F0R(ign, q) {
-        string s; cin >> s;
-        if(s[0] == '-') {
-            ull x, y; cin >> x >> y;
-            x--, y--;
-            ull res = 0;
-            for(int b = 0; b<=31; b++) {
-                ull sq = 0;
-                if((x & (1ULL<<b)) > 0) sq+=2;
-                if((y & (1ULL<<b)) > 0) sq+=1;
-                if(sq == 1) sq =3;
-                else if(sq == 3) sq = 1;
-                res += sq << (2*b);
-            }
-            std::cout << (res+1) << "\n";
-        } else {
-            ull d; cin >> d; d--;
-            ull x = 0, y = 0;
-            for(int b = 0; b<=31; b++){
-                ull sq = 0;
-                if((d & (1ULL << (2*b+1)))) sq += 2;
-                if((d & (1ULL << (2*b)))) sq += 1;
-                if(sq == 1) sq = 3;
-                else if(sq == 3) sq = 1;
-                if(sq & 2)
-                    x+= 1ULL << b;
-                if(sq & 1)
-                    y+= 1ULL << b;
-            }
-            std::cout << (x+1) << " " << (y+1) << "\n";
-        }
-    }
+    
 }
 
 int main() {

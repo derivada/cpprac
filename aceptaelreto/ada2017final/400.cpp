@@ -6,6 +6,7 @@ using namespace __gnu_pbds;
 #define ll long long	// 64 bits
 #define ld long double	// 80 bits
 #define PI 3.1415926535897932384626433832795l
+#define debug(x) cout << #x << " is " << x << endl
 typedef vector<int> vi;
 typedef pair<int, int> pi;
 typedef vector<vector<int>> graph;
@@ -19,7 +20,6 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define S second
 #define PB push_back
 #define MP make_pair
-#define debug(x) cout << #x << " is " << x << endl
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()  // all the structure
 #define F0R(i, n) for (int i = 0; i < n; i++)
@@ -29,16 +29,30 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
 
-inline void solve() {
-    int n;
-    cin >> n;
+
+inline bool solve() {
+    string s; cin >>s;
+    if(!cin) return false;
+    int n = s.size();
+    int last = -1, res = -1;
+    F0R(i, n) {
+        if(s[i] == 'X') {
+            // cama ocupada
+            if(last == -1) {
+                res = i;
+            } else {
+                int diff = (i-last)/2;
+                res = std::max(res, diff);
+            }
+            last = i;
+        }
+    }   
+    res = std::max(res, n-1-last);
+    cout << res-1 << endl;
+    return true;
 }
 
 int main() {
     fastio;
-    // freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
-    int tc;
-    cin >> tc;
-    while (tc--) 
-        solve();
+    while (solve());
 }

@@ -30,41 +30,37 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 const ll MOD = 1e9 + 7; // change MOD value
 
 inline void solve() {
-    int n, q;
-    cin >> n >> q;
-    using ull = unsigned long long;
-    F0R(ign, q) {
-        string s; cin >> s;
-        if(s[0] == '-') {
-            ull x, y; cin >> x >> y;
-            x--, y--;
-            ull res = 0;
-            for(int b = 0; b<=31; b++) {
-                ull sq = 0;
-                if((x & (1ULL<<b)) > 0) sq+=2;
-                if((y & (1ULL<<b)) > 0) sq+=1;
-                if(sq == 1) sq =3;
-                else if(sq == 3) sq = 1;
-                res += sq << (2*b);
+    int n, m;
+    cin >> n >> m;
+    vector<string> orig(n);
+    F0R(i, n) {
+        cin >> orig[i];
+    }
+    vector<bool> seen(n, false);
+    int max_seen = 0;
+    F0R(i, m) {
+        int curr = 0;
+        F0R(j, n) {
+            string s; cin >> s;
+            if(s == orig[j]) {
+                curr++;
+                seen[j] = true;
             }
-            std::cout << (res+1) << "\n";
-        } else {
-            ull d; cin >> d; d--;
-            ull x = 0, y = 0;
-            for(int b = 0; b<=31; b++){
-                ull sq = 0;
-                if((d & (1ULL << (2*b+1)))) sq += 2;
-                if((d & (1ULL << (2*b)))) sq += 1;
-                if(sq == 1) sq = 3;
-                else if(sq == 3) sq = 1;
-                if(sq & 2)
-                    x+= 1ULL << b;
-                if(sq & 1)
-                    y+= 1ULL << b;
-            }
-            std::cout << (x+1) << " " << (y+1) << "\n";
+            max_seen = std::max(curr, max_seen);
         }
     }
+    int total_seen = 0;
+    F0R(i, n) {
+        if(seen[i]) total_seen++;
+    }
+    if(total_seen < n) {
+        std::cout << "-1\n";
+        return;
+    }
+    // spamming all in the best row, then deleting the n-max_seen that are not present in there
+    // and using other rows one by one to end
+    int total = n + (n-max_seen)*2;
+    std::cout << total << "\n";
 }
 
 int main() {

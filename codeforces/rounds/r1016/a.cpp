@@ -32,6 +32,11 @@ const ll MOD = 1e9 + 7; // change MOD value
 inline void solve() {
     int n;
     cin >> n;
+    if(n % 2) {
+        cout << "YES\n";
+    } else {
+        cout << "NO\n";
+    }
 }
 
 int main() {

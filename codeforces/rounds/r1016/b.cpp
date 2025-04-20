@@ -30,8 +30,20 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 const ll MOD = 1e9 + 7; // change MOD value
 
 inline void solve() {
-    int n;
-    cin >> n;
+    string s;
+    cin >> s;
+    int last_nnz = 0, n = s.length(), res = 0;
+    for(int i = n-1; i>=0; i--) {
+        if(s[i] != '0') {
+            last_nnz = i;
+            res = n - last_nnz;
+            break;
+        }
+    }
+    for(int i = 0; i<=last_nnz; i++) {
+        if(s[i]!='0') res++;
+    }
+    std::cout << (res-2) << "\n";
 }
 
 int main() {

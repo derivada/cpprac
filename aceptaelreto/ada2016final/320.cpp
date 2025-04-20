@@ -6,6 +6,7 @@ using namespace __gnu_pbds;
 #define ll long long	// 64 bits
 #define ld long double	// 80 bits
 #define PI 3.1415926535897932384626433832795l
+#define debug(x) cout << #x << " is " << x << endl
 typedef vector<int> vi;
 typedef pair<int, int> pi;
 typedef vector<vector<int>> graph;
@@ -19,7 +20,6 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define S second
 #define PB push_back
 #define MP make_pair
-#define debug(x) cout << #x << " is " << x << endl
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()  // all the structure
 #define F0R(i, n) for (int i = 0; i < n; i++)
@@ -29,51 +29,32 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
 
-
-bool isPrime(int x) {
-    for (int d = 2; d * d <= x; d++) {
-        if (x % d == 0)
-            return false;
-    }
-    return x >= 2;
-}
-
-
-
-
 inline void solve() {
-    int x, k;
-    cin >> x >> k;
-    if(x == 1) {
-        std::vector<bool> onePrimes(8);
-        onePrimes[0] = false;
-        int x = 11;
-        for(int i = 1; i<=7; i++) {
-            onePrimes[i] = isPrime(x);
-            x = x*10 + 1;
-        }
-        if(onePrimes[k-1] == true ){
-            std::cout << "YES\n";
-        }else{
-            std::cout << "NO\n";
-        }
-        return;
-    } else if(k > 1) {
-        std::cout << "NO\n";
-    } else {
-        if(isPrime(x)) {
-            std::cout << "YES\n";
-        } else {
-            std::cout << "NO\n";
-        }
+    int k, n; cin >> k >> n;
+    queue<int> index_q;
+    int best = 0, curr = 0, left = -1; // left es exclusivo
+    F0R(i, n) {
+        int x; cin >> x;
+        if(x >= k) {
+            // la palmera aguanta, pero ya hay 5 en la franja
+            if(index_q.size() == 5) {
+                int new_left = index_q.front();
+                index_q.pop();
+                // actualizar izquierda de la franja
+                curr = curr - (new_left - left);
+                left = new_left;
+            }
+            index_q.push(i);
+        } 
+        curr++;
+        best = std::max(best, curr);
     }
+    cout << best << "\n";
+    return;
 }
 
 int main() {
     fastio;
-    // freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
-    int tc;
-    cin >> tc;
-    while (tc--) 
-        solve();
+    int tc; cin >> tc;
+    while(tc--) solve();
 }

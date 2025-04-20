@@ -46,8 +46,7 @@ inline void solve() {
                 dq.push_back(last);
             } else {
                 last = dq.back();
-                dq.pop_b
-                ack();
+                dq.pop_back();
                 dq.push_front(last);
             }
             ll delta = sum - last * dq.size();

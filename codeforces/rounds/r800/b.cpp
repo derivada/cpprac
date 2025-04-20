@@ -29,42 +29,52 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
 
-inline void solve() {
-    int n, q;
-    cin >> n >> q;
-    using ull = unsigned long long;
-    F0R(ign, q) {
-        string s; cin >> s;
-        if(s[0] == '-') {
-            ull x, y; cin >> x >> y;
-            x--, y--;
-            ull res = 0;
-            for(int b = 0; b<=31; b++) {
-                ull sq = 0;
-                if((x & (1ULL<<b)) > 0) sq+=2;
-                if((y & (1ULL<<b)) > 0) sq+=1;
-                if(sq == 1) sq =3;
-                else if(sq == 3) sq = 1;
-                res += sq << (2*b);
-            }
-            std::cout << (res+1) << "\n";
-        } else {
-            ull d; cin >> d; d--;
-            ull x = 0, y = 0;
-            for(int b = 0; b<=31; b++){
-                ull sq = 0;
-                if((d & (1ULL << (2*b+1)))) sq += 2;
-                if((d & (1ULL << (2*b)))) sq += 1;
-                if(sq == 1) sq = 3;
-                else if(sq == 3) sq = 1;
-                if(sq & 2)
-                    x+= 1ULL << b;
-                if(sq & 1)
-                    y+= 1ULL << b;
-            }
-            std::cout << (x+1) << " " << (y+1) << "\n";
-        }
+vector<ll>  l, r;
+vector<vector<int>> tr; // adj list
+int res = 0;
+inline ll dfs(int v) {
+    int nchild = tr[v].size();
+    if(nchild == 0) {
+        // leaf
+        res++;
+        return r[v];
     }
+
+    ll accum = 0;
+    for(int i = 0; i<nchild; i++) {
+        accum += dfs(tr[v][i]); 
+    }
+
+    if(accum < l[v]) {
+        // not enough, new op
+        res++;
+        return r[v];
+    } else {
+        // enough, but dont overflow the node!
+        return std::min(r[v], accum);
+    }
+}
+
+
+inline void solve() {
+    int n;
+    cin >> n;
+    res = 0;
+    tr.assign(n, {});
+    l.resize(n);
+    r.resize(n);
+    for(int i = 1; i<n; i++){
+        int x;
+        cin >> x;
+        x--;
+        tr[x].push_back(i);
+    }
+    
+    for(int i = 0; i<n; i++) {
+        cin >> l[i] >> r[i];
+    }
+    dfs(0);
+    std::cout << res << "\n";
 }
 
 int main() {

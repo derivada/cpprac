@@ -29,42 +29,51 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
 
+inline bool check_possible(int MEX, int k, const vi &v) {
+    int n = v.size();
+    // debug(MEX); debug(k);
+    // check if we can do min mex of k subpartitions
+    int i=0, j = 0;
+    while(j < n){
+        unordered_set<int> found;
+        while(found.size() <= MEX && j < n) {
+            if(v[j] <= MEX) {
+                found.insert(v[j]);
+            }
+            // debug(found.size());
+            j++;
+        }
+        if(found.size() == (MEX+1))
+            i++;
+    }
+    // if(i == k) 
+    // {
+    //     std::cout << "m = " << MEX << " is possible\n";
+    // } else {
+    //     std::cout << "m = " << MEX << " is not possible\n";
+
+    // }
+    return (i >= k);
+}
+
 inline void solve() {
-    int n, q;
-    cin >> n >> q;
-    using ull = unsigned long long;
-    F0R(ign, q) {
-        string s; cin >> s;
-        if(s[0] == '-') {
-            ull x, y; cin >> x >> y;
-            x--, y--;
-            ull res = 0;
-            for(int b = 0; b<=31; b++) {
-                ull sq = 0;
-                if((x & (1ULL<<b)) > 0) sq+=2;
-                if((y & (1ULL<<b)) > 0) sq+=1;
-                if(sq == 1) sq =3;
-                else if(sq == 3) sq = 1;
-                res += sq << (2*b);
-            }
-            std::cout << (res+1) << "\n";
+    int n, k;
+    cin >> n >> k;
+    vi v(n);
+    F0R(i, n) {
+        cin >> v[i];
+    }
+    int l = -1, r = n, MEX;
+    while (r - l > 1) {
+        MEX = (l + r) / 2;
+        if (!check_possible(MEX, k, v)) {
+            r = MEX;
         } else {
-            ull d; cin >> d; d--;
-            ull x = 0, y = 0;
-            for(int b = 0; b<=31; b++){
-                ull sq = 0;
-                if((d & (1ULL << (2*b+1)))) sq += 2;
-                if((d & (1ULL << (2*b)))) sq += 1;
-                if(sq == 1) sq = 3;
-                else if(sq == 3) sq = 1;
-                if(sq & 2)
-                    x+= 1ULL << b;
-                if(sq & 1)
-                    y+= 1ULL << b;
-            }
-            std::cout << (x+1) << " " << (y+1) << "\n";
+            l = MEX;
         }
     }
+    
+    cout << l+1 << "\n";
 }
 
 int main() {
