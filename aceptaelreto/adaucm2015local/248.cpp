@@ -6,7 +6,6 @@ using namespace __gnu_pbds;
 #define ll long long	// 64 bits
 #define ld long double	// 80 bits
 #define PI 3.1415926535897932384626433832795l
-#define debug(x) cout << #x << " is " << x << endl
 typedef vector<int> vi;
 typedef pair<int, int> pi;
 typedef vector<vector<int>> graph;
@@ -29,13 +28,45 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
 
-
 inline bool solve() {
-    int l, r; cin >> l >> r; if(!l && !r) return false;
+    int n; cin >> n;
+    if(!n) return false;
+    vi v; 
+    ll accum_neg = 0, accum_pos = 0;
+    F0R(i, n) {
+        ll x; cin >> x;
+        if(x < 0) {
+            if(accum_pos > 0) 
+                v.push_back(accum_pos);
+            accum_neg += x;
+            accum_pos = 0;
+        } else {
+            if(accum_neg < 0)
+                v.push_back(accum_neg);
+            accum_pos += x;
+            accum_neg = 0;
+        }
+    }
+    if(accum_neg < 0)
+        v.push_back(accum_neg);
+    if(accum_pos > 0)
+        v.push_back(accum_pos);
+    
+    ll res = 0, sum = 0;
+    for(int i = 0; i<v.size(); i++) {
+    	sum = max(sum + (ll) v[i], (ll)  v[i]);
+    	res = max(res, sum);
+    }
+    // ciclo
+    for(int i = 0; i<v.size(); i++) {
+    	sum = max(sum + (ll) v[i], (ll)  v[i]);
+    	res = max(res, sum);
+    }
+    cout << res << "\n";
     return true;
 }
 
 int main() {
     fastio;
-    while(solve());
+    while (solve());
 }

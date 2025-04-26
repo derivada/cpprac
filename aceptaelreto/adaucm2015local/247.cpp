@@ -6,7 +6,6 @@ using namespace __gnu_pbds;
 #define ll long long	// 64 bits
 #define ld long double	// 80 bits
 #define PI 3.1415926535897932384626433832795l
-#define debug(x) cout << #x << " is " << x << endl
 typedef vector<int> vi;
 typedef pair<int, int> pi;
 typedef vector<vector<int>> graph;
@@ -29,17 +28,21 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
 
-inline void solve() {
-    int n, m; cin >> n >> m;
-    int total = n+m;
-    int row = (total*(total+1))/2;
-    cout << (row+n+1) << endl;
+inline bool solve() {
+    int n; cin >> n;
+    if(!n) return false;
+    vi v(n); F0R(i, n) cin >> v[i];
 
-    return;
+    for(int i = 1; i<n; i++) {
+        if(v[i] <= v[i-1]) {
+            cout << "NO\n";return true;
+        }
+    }
+    cout << "SI\n";
+    return true;
 }
 
 int main() {
     fastio;
-    int tc; cin >> tc;
-    while(tc--) solve();
+    while (solve());
 }

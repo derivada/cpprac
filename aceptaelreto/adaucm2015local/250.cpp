@@ -6,7 +6,6 @@ using namespace __gnu_pbds;
 #define ll long long	// 64 bits
 #define ld long double	// 80 bits
 #define PI 3.1415926535897932384626433832795l
-#define debug(x) cout << #x << " is " << x << endl
 typedef vector<int> vi;
 typedef pair<int, int> pi;
 typedef vector<vector<int>> graph;
@@ -29,32 +28,33 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
 
-inline void solve() {
-    int k, n; cin >> k >> n;
-    queue<int> index_q;
-    int best = 0, curr = 0, left = -1; // left es exclusivo
-    F0R(i, n) {
+inline bool solve() {
+    int n; cin >> n;
+    if(!n) return false;
+    vi pre(n);
+    cin >> pre[0];
+    for(int i = 1; i<n; i++) {
         int x; cin >> x;
-        if(x >= k) {
-            // la palmera aguanta, pero ya hay 5 en la franja
-            if(index_q.size() == 5) {
-                int new_left = index_q.front();
-                index_q.pop();
-                // actualizar izquierda de la franja
-                curr = curr - (new_left - left);
-                left = new_left;
-            }
-            index_q.push(i);
-        } 
-        curr++;
-        best = std::max(best, curr);
+        pre[i] = pre[i-1] + x;
     }
-    cout << best << "\n";
-    return;
+    if(pre[n-1] == 0 || n == 1) {
+        cout << "0\n";
+        return true;
+    }
+    int d = 0;
+    int best = 2*1e9+7;
+    for(int i = 0; i<n-1; i++) {
+        cout << i << " -> " << pre[n-1] - pre[i] << endl;
+        if(pre[n-1] - pre[i] < best) {
+            best = pre[n-1] - pre[i];
+            d = i;
+        }
+    }
+    cout << d << "\n";
+    return true;
 }
 
 int main() {
     fastio;
-    int tc; cin >> tc;
-    while(tc--) solve();
+    while (solve());
 }

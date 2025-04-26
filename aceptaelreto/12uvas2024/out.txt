@@ -1,0 +1,8 @@
+Read n = 50, l = 1
+NO
+Read n = 50, l = 1
+NO
+Read n = 50, l = 2
+NO
+Read n = 50, l = 2
+NO

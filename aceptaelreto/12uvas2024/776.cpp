@@ -6,7 +6,6 @@ using namespace __gnu_pbds;
 #define ll long long	// 64 bits
 #define ld long double	// 80 bits
 #define PI 3.1415926535897932384626433832795l
-#define debug(x) cout << #x << " is " << x << endl
 typedef vector<int> vi;
 typedef pair<int, int> pi;
 typedef vector<vector<int>> graph;
@@ -29,46 +28,30 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
 
-vector<vector<short>> dp;
-
 inline bool solve() {
-    string s;
-    cin >> s; if(!cin) return false;
-    int n = s.length();
-    dp.assign(n, vector<short>(n, -1));
-    F0R(i, n)
-        dp[i][i] = 1;
-    for(int len = 2; len<=n; len++) {
-        for(int l = 0; l+len-1<n; l++) {
-            int r = l+len-1;
-            if (s[l] == s[r]) {
-                if (len == 2) dp[l][r] = 2;
-                else dp[l][r] = dp[l+1][r-1] + 2;
-            } else {
-                dp[l][r] = max(dp[l+1][r], dp[l][r-1]);
-            }
+    int n; cin >> n;
+    if(!n) return false;
+    queue<pi> q;
+    F0R(i, n){
+        int l, r; cin >> l >> r; q.push(make_pair(l, r));
+    }
+    q.push(make_pair(1e9 + 7, 1e9 + 9)); // sentinel value
+    int x = -1; 
+    int res = 0;
+    while(1){
+        cin >> x;
+        if(x == 0) break;
+        pi curr = q.front();
+        // forward intervals
+        while(curr.second < x) {
+            q.pop(); curr = q.front();
+        }
+        if(x < curr.first) {
+            res++;
         }
     }
-    // reconstruct 0..n
-    string left = "", right = "";
-    int l = 0, r = n-1;
-    while (l <= r) {
-        if (l == r) {
-            left += s[l];
-            break;
-        }
-        if (s[l] == s[r]) {
-            left += s[l];
-            right = s[r] + right;
-            l++, r--;
-        } else {
-            if (dp[l+1][r] >= dp[l][r-1])
-                l++;
-            else
-                r--;
-        }
-    }
-    cout << (left+right) << endl;
+
+    cout << res << "\n";
     return true;
 }
 

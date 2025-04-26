@@ -6,7 +6,6 @@ using namespace __gnu_pbds;
 #define ll long long	// 64 bits
 #define ld long double	// 80 bits
 #define PI 3.1415926535897932384626433832795l
-#define debug(x) cout << #x << " is " << x << endl
 typedef vector<int> vi;
 typedef pair<int, int> pi;
 typedef vector<vector<int>> graph;
@@ -29,52 +28,30 @@ using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statisti
 #define fastio cin.sync_with_stdio(0);cin.tie(0);
 const ll MOD = 1e9 + 7; // change MOD value
 
-vector<vi> adj(10000);
-
-inline void construct_adj() {
-    F0R(i, 10000) {
-        int sum = (i+1) % 10000;
-        int prod = (i * 2) % 10000;
-        int div = (i / 3) % 10000;
-
-        adj[i].push_back(sum);
-        adj[i].push_back(prod);
-        adj[i].push_back(div);
-    }
-}
-
-inline bool solve() {
-    int from, to; cin >> from; if(!cin) return false; cin >> to;
-    // bfs
-    if(from == to) {
-        cout << "0\n";
-        return true;
-    }
-    vector<bool> used(10000, false);
-    vi d(10000, 0);
-    queue<int> q;
-    q.push(from);
-    used[from] = true;
-    while (!q.empty()) {
-        int v = q.front();
-        q.pop();
-        for (int u : adj[v]) {
-            if (!used[u]) {
-                used[u] = true;
-                q.push(u);
-                d[u] = d[v] + 1;
-                if(u == to) {
-                    cout << d[to] << endl;
-                    return true;
-                }
-            }
+inline void solve() {
+    int n, k; cin >> n >> k;
+    vi v(n);
+    F0R(i, n) cin >> v[i];
+    sort(all(v));
+    int max_val = v[n-1] * k;
+    vector<int> dp(max_val+1, 1e9);
+    dp[0] = 0;
+    for(int sum = 1; sum <= max_val; sum++) {
+        for(int j = 0; j<n; j++) {
+        if(sum - v[j] >= 0)
+            dp[sum] = min(dp[sum], dp[sum - v[j]] + 1);
         }
     }
-    return true;
+    int total = 0;
+    for(int sum = 1; sum <= max_val; sum++) {
+        if(dp[sum] <= k)total++;
+    }
+    cout << total << endl;
+    return;
 }
 
 int main() {
     fastio;
-    construct_adj();
-    while (solve());
+    int tc; cin >> tc;
+    while(tc--) solve();
 }
